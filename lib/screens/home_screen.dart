@@ -13,9 +13,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   // Lista de pantallas que se mostrarán según el índice
   static List<Widget> _widgetOptions = <Widget>[
-    Text('Pantalla de Inicio'),
     BicycleSearchScreen(),
-    Text('Pantalla de Alquiler'),
+    ResultsScreen(),
+    Center(child: Text('Pantalla de Carrito')),
     Text('Pantalla de Perfil'),
   ];
 

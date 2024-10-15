@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ecobicimobileapp/screens/screens.dart';
+import 'package:ecobicimobileapp/screens/results_screen.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   @override
@@ -9,6 +11,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   // Definimos los valores iniciales del rango del slider
   double _minValue = 200;
   double _maxValue = 500;
+
+    // Lista para almacenar las marcas seleccionadas
+  List<String> selectedBrands = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,10 +113,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBrandIcon("assets/audi_logo.png"),
-                  _buildBrandIcon("assets/bmw_logo.png"),
-                  _buildBrandIcon("assets/hyundai_logo.png"),
-                  _buildBrandIcon("assets/mercedes_logo.png"),
+                  _buildBrandIcon("assets/giant_logo.png", "Giant"),
+                  _buildBrandIcon("assets/trek_logo.png", "Trek"),
+                  _buildBrandIcon("assets/specialized_logo.png", "Specialized"),
+                  _buildBrandIcon("assets/cannondale_logo.png", "Cannondale"),
                 ],
               ),
             ),
@@ -134,9 +140,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildFilterOption("Hatchback", true),
-                  _buildFilterOption("Speed", false),
-                  _buildFilterOption("Eco", false),
+                  _buildFilterOption("Mountain", true),
+                  _buildFilterOption("Road", false),
+                  _buildFilterOption("Electric", false),
                 ],
               ),
             ),
@@ -160,9 +166,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildFilterOption("Auto/DSG", true),
-                  _buildFilterOption("Automatic", false),
-                  _buildFilterOption("Manual", false),
+                  _buildFilterOption("Aluminium", true),
+                  _buildFilterOption("Carbon", false),
+                  _buildFilterOption("Steel", false),
                 ],
               ),
             ),
@@ -174,7 +180,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 margin: EdgeInsets.symmetric(horizontal: 40), // Margin en el botón para espacio
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context); // Cierra la ventana flotante
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResultsScreen(), // Lleva a la pantalla de resultados
+                    ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF26348B), // Color azul
@@ -213,27 +224,40 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   }
 
   // Método para construir los íconos de las marcas con sombra
-  Widget _buildBrandIcon(String assetPath) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 3,
-            blurRadius: 10,
-            offset: Offset(0, 4), // Sombra debajo del ícono de la marca
-          ),
-        ],
-      ),
-      child: CircleAvatar(
-        radius: 30,
-        backgroundImage: AssetImage(assetPath),
+  Widget _buildBrandIcon(String assetPath, String brandName) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (selectedBrands.contains(brandName)) {
+            selectedBrands.remove(brandName);
+          } else {
+            selectedBrands.add(brandName);
+          }
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 3,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: CircleAvatar(
+          radius: 30,
+          backgroundImage: AssetImage(assetPath),
+          backgroundColor:
+              selectedBrands.contains(brandName) ? Colors.blueAccent : null,
+        ),
       ),
     );
   }
 
-  // Método para construir los filtros de tipo y transmisión con sombra
+  // Método para construir los filtros de tipo de bicicleta y material del marco con sombra
   Widget _buildFilterOption(String label, bool selected) {
     return Container(
       decoration: BoxDecoration(
@@ -245,7 +269,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             color: Colors.black.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 8,
-            offset: Offset(0, 4), // Sombra debajo de los botones de filtro
+            offset: Offset(0, 4),
           ),
         ],
       ),

@@ -137,9 +137,9 @@ class BicycleSearchScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBrandIcon("assets/audi_logo.png"),
-                  _buildBrandIcon("assets/bmw_logo.png"),
-                  _buildBrandIcon("assets/hyundai_logo.png"),
+                  _buildBrandIcon(""),
+                  _buildBrandIcon(""),
+                  _buildBrandIcon(""),
                   GestureDetector(
                     onTap: () {
                       // Acción de "View All"
