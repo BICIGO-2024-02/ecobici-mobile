@@ -12,19 +12,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   int _selectedIndex = 0;
 
   // Lista de pantallas que se mostrarán según el índice
-  static final List<Widget> _screens = <Widget>[
-    Center(child: Text('Pantalla de Inicio')),
-    BicycleSearchScreen(),// Añadimos la pantalla de búsqueda de bicicletas
-    Center(child: Text('Pantalla de Alquiler')),
-    Center(child: Text('Pantalla de Perfil')),
+  static List<Widget> _widgetOptions = <Widget>[
+    Text('Pantalla de Inicio'),
+    BicycleSearchScreen(),
+    Text('Pantalla de Alquiler'),
+    Text('Pantalla de Perfil'),
   ];
 
-  // Función para manejar el cambio de pantalla
+  // Cuando se selecciona un ítem en la barra de navegación
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Cambia el índice seleccionado
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           
         ],
       ),
-      body: _screens[_selectedIndex], // Cambia el contenido según el índice seleccionado
+      body: SafeArea(
+        child: _widgetOptions.elementAt(_selectedIndex), 
+      ),
       bottomNavigationBar: CustomBottomNavigationBar(
         icons: [
           Icons.home,
