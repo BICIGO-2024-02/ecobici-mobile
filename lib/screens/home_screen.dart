@@ -35,15 +35,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         elevation: 0,
         automaticallyImplyLeading: false, // Esto oculta el ícono de 'back' si no es necesario
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.menu, 
-              color:Color(0xFF26348B),
-              size: 30,
-              ),
-            onPressed: () {
-              // Acción del botón hamburguesa (desplegar menú o abrir un drawer)
-            },
+          PopupMenuButton<int>(
+            icon: Icon(Icons.menu, color: Color(0xFF26348B), size: 30),
+            color: Colors.white, // Fondo blanco para el menú
+            onSelected: (item) => selectedItem(context, item),
+            itemBuilder: (context) => [
+              _buildMenuItem(0, 'Account Settings'),
+              _buildMenuItem(1, 'Payment Details'),
+              _buildMenuItem(2, 'Preferences'),
+              _buildMenuItem(3, 'Orders'),
+              _buildMenuItem(4, 'Display'),
+            ],
           ),
           // Icono de la foto del usuario
           Padding(
@@ -73,5 +75,49 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onItemTapped: _onItemTapped, // Función para cambiar de pantalla
       ),
     );
+  }
+  // Función para construir los items del menú
+  PopupMenuItem<int> _buildMenuItem(int value, String text) {
+    return PopupMenuItem<int>(
+      value: value,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.black), // Texto negro
+      ),
+    );
+  }
+  // Función para construir un divisor entre los items del menú
+  PopupMenuItem<int> _buildDivider() {
+    return PopupMenuItem<int>(
+      enabled: false, // El divider no es seleccionable
+      child: Divider(
+        color: Colors.grey, // Color de la línea divisoria
+        thickness: 1, // Grosor de la línea divisoria
+      ),
+    );
+  }
+  void selectedItem(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        print("Account Settings selected");
+        // Aquí puedes redirigir a la pantalla de configuración de cuenta
+        break;
+      case 1:
+        print("Payment Details selected");
+        // Aquí puedes redirigir a la pantalla de detalles de pago
+        break;
+      case 2:
+        print("Preferences selected");
+        // Aquí puedes redirigir a la pantalla de preferencias
+        break;
+      case 3:
+        print("Orders selected");
+        // Aquí puedes redirigir a la pantalla de pedidos
+        break;
+      case 4:
+        print("Display selected");
+        // Aquí puedes redirigir a la pantalla de configuración de pantalla
+        break;
+    }
   }
 }
