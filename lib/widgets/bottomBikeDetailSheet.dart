@@ -1,3 +1,4 @@
+import 'package:ecobicimobileapp/screens/booking_screen.dart';
 import 'package:flutter/material.dart';
 
 class BikeDetailBottomSheet extends StatelessWidget {
@@ -32,7 +33,7 @@ class BikeDetailBottomSheet extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
-              color: Color(0xFF26348B),
+              color: Color(0xFF325D67),
             ),
           ),
           SizedBox(height: 20),
@@ -44,11 +45,12 @@ class BikeDetailBottomSheet extends StatelessWidget {
           _buildInfoRow('Weight', weight),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context); // Cierra el BottomSheet
-            },
+            onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BookingScreen()),
+            ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF26348B),
+              backgroundColor: Color(0xFF325D67),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

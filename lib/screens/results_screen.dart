@@ -9,12 +9,11 @@ class ResultsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        automaticallyImplyLeading: true, // Añade el ícono de "back"
-        iconTheme: IconThemeData(color: Color(0xFF26348B)),
+        automaticallyImplyLeading: false,
         title: Text(
           'Results',
           style: TextStyle(
-            color: Color(0xFF26348B),
+            color: Color(0xFF325D67),
             fontWeight: FontWeight.bold,
             fontSize: 35,
           ),
@@ -70,7 +69,7 @@ class ResultsScreen extends StatelessWidget {
                 child: Text(
                   'View All',
                   style: TextStyle(
-                    color: Color(0xFF26348B),
+                    color: Color(0xFF325D67),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -163,7 +162,7 @@ class ResultsScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                 ),
               ),
             ],

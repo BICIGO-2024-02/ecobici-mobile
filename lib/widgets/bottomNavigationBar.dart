@@ -43,7 +43,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 icons[index],
                 size: 28, // Ajusta el tamaño del ícono
                 color: index == selectedIndex
-                    ? Color(0xFF26348B)
+                    ? Color(0xFF325D67)
                     : Colors.black54, // Cambia el color del ícono cuando está seleccionado
               ),
             ),

@@ -8,15 +8,15 @@ class BicycleSearchScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        automaticallyImplyLeading: true, // Esto agrega la flecha de regreso
-        iconTheme: IconThemeData(color: Color(0xFF26348B)),
+        automaticallyImplyLeading: false, // Esto agrega la flecha de regreso
+        iconTheme: IconThemeData(color: Color(0xFF325D67)),
         title: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: 16.0), // Añadido padding lateral
           child: Text(
             'Drive in style',
             style: TextStyle(
-              color: Color(0xFF26348B),
+              color: Color(0xFF325D67),
               fontWeight: FontWeight.bold,
               fontSize:
                   45, // Cambia este valor para ajustar el tamaño del texto
@@ -44,7 +44,7 @@ class BicycleSearchScreen extends StatelessWidget {
                           BorderRadius.circular(30), // Bordes redondeados
                       boxShadow: [
                         BoxShadow(
-                          color: Color(0xFF26348B)
+                          color: Color(0xFF325D67)
                               .withOpacity(0.1), // Color de la sombra
                           spreadRadius: 1,
                           blurRadius: 10,
@@ -73,13 +73,13 @@ class BicycleSearchScreen extends StatelessWidget {
                   width: 70,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Color(0xFF26348B), // Color de fondo (azul)
+                    color: Color(0xFF325D67), // Color de fondo (azul)
                     shape: BoxShape.rectangle, // Cambiar a rectángulo
                     borderRadius:
                         BorderRadius.circular(30), // Bordes redondeados
                     boxShadow: [
                       BoxShadow(
-                        color: Color(0xFF26348B).withOpacity(0.2),
+                        color: Color(0xFF325D67).withOpacity(0.2),
                         spreadRadius: 2,
                         blurRadius: 10,
                         offset: Offset(0, 4), // Sombra debajo del botón
@@ -125,7 +125,7 @@ class BicycleSearchScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                 ),
               ),
             ),
@@ -137,9 +137,9 @@ class BicycleSearchScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBrandIcon(""),
-                  _buildBrandIcon(""),
-                  _buildBrandIcon(""),
+                  _buildBrandIcon("https://cdn.worldvectorlogo.com/logos/monark.svg"),
+                  _buildBrandIcon("https://cdn.worldvectorlogo.com/logos/monark.svg"),
+                  _buildBrandIcon("https://cdn.worldvectorlogo.com/logos/monark.svg"),
                   GestureDetector(
                     onTap: () {
                       // Acción de "View All"
@@ -147,7 +147,7 @@ class BicycleSearchScreen extends StatelessWidget {
                     child: Text(
                       "View All",
                       style: TextStyle(
-                        color: Color(0xFF26348B),
+                        color: Color(0xFF325D67),
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -166,7 +166,7 @@ class BicycleSearchScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                 ),
               ),
             ),
@@ -212,7 +212,7 @@ class BicycleSearchScreen extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF26348B).withOpacity(0.1), // Color de la sombra
+            color: Color(0xFF325D67).withOpacity(0.1), // Color de la sombra
             spreadRadius: 1,
             blurRadius: 10,
             offset: Offset(0, 4), // Posición de la sombra
@@ -232,7 +232,7 @@ class BicycleSearchScreen extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF26348B).withOpacity(0.1), 
+            color: Color(0xFF325D67).withOpacity(0.1), 
             spreadRadius: 1,
             blurRadius: 10,
             offset: Offset(0, 4), // Posición de la sombra
@@ -246,11 +246,11 @@ class BicycleSearchScreen extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          side: BorderSide(color: Color(0xFF26348B)),
+          side: BorderSide(color: Color(0xFF325D67)),
         ),
         child: Text(
           label,
-          style: TextStyle(color: Color(0xFF26348B)),
+          style: TextStyle(color: Color(0xFF325D67)),
         ),
       ),
     );

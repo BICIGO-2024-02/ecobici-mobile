@@ -44,7 +44,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               child: Text(
                 'Price Range',
                 style: TextStyle(
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
@@ -61,7 +61,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   Text(
                     'S/ ${_minValue.toInt()}',
                     style: TextStyle(
-                      color: Color(0xFF26348B),
+                      color: Color(0xFF325D67),
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -72,7 +72,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                       max: 500,
                       divisions: 20, // Divisiones del slider
                       values: RangeValues(_minValue, _maxValue),
-                      activeColor: Color(0xFF26348B), // Color del slider cuando está activo
+                      activeColor: Color(0xFF325D67), // Color del slider cuando está activo
                       inactiveColor: Colors.grey, // Color del slider cuando está inactivo
                       onChanged: (RangeValues values) {
                         setState(() {
@@ -85,7 +85,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   Text(
                     'S/ ${_maxValue.toInt()}',
                     style: TextStyle(
-                      color: Color(0xFF26348B),
+                      color: Color(0xFF325D67),
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
@@ -102,7 +102,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 "Brands",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                   fontSize: 18,
                 ),
               ),
@@ -130,7 +130,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                 ),
               ),
             ),
@@ -156,7 +156,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: Color(0xFF26348B),
+                  color: Color(0xFF325D67),
                 ),
               ),
             ),
@@ -188,7 +188,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF26348B), // Color azul
+                    backgroundColor: Color(0xFF325D67), // Color azul
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40), // Bordes redondeados
                     ),
@@ -218,7 +218,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       child: Text(label),
       style: OutlinedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        side: BorderSide(color: Color(0xFF26348B)),
+        side: BorderSide(color: Color(0xFF325D67)),
       ),
     );
   }
@@ -251,7 +251,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           radius: 30,
           backgroundImage: AssetImage(assetPath),
           backgroundColor:
-              selectedBrands.contains(brandName) ? Colors.blueAccent : null,
+              selectedBrands.contains(brandName) ? Color(0xFF325D67) : null,
         ),
       ),
     );
@@ -261,9 +261,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Widget _buildFilterOption(String label, bool selected) {
     return Container(
       decoration: BoxDecoration(
-        color: selected ? Color(0xFF26348B) : Colors.white,
+        color: selected ? Color(0xFF325D67) : Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Color(0xFF26348B)),
+        border: Border.all(color: Color(0xFF325D67)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -277,7 +277,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       child: Text(
         label,
         style: TextStyle(
-          color: selected ? Colors.white : Color(0xFF26348B),
+          color: selected ? Colors.white : Color(0xFF325D67),
         ),
       ),
     );

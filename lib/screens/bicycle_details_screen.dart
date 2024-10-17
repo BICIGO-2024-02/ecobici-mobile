@@ -24,7 +24,7 @@ class _BicycleDetailsScreenState extends State<BicycleDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_bicycle['name']),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Color(0xFF325D67),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

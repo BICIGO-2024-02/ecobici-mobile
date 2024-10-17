@@ -1,4 +1,6 @@
 import 'package:ecobicimobileapp/screens/add_bicycle_screen.dart';
+import 'package:ecobicimobileapp/screens/profile.dart';
+import 'package:ecobicimobileapp/screens/rental_history.dart';
 import 'package:ecobicimobileapp/screens/user_bicycles_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/widgets/bottomNavigationBar.dart';
@@ -17,8 +19,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   static List<Widget> _widgetOptions = <Widget>[
     BicycleSearchScreen(),
     ResultsScreen(),
-    Center(child: Text('Pantalla de Carrito')),
-    Text('Pantalla de Perfil'),
+    RentalHistoryScreen(),
+    UserProfileScreen(),
   ];
 
   // Cuando se selecciona un ítem en la barra de navegación
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         automaticallyImplyLeading: false, // Esto oculta el ícono de 'back' si no es necesario
         actions: [
           PopupMenuButton<int>(
-            icon: Icon(Icons.menu, color: Color(0xFF26348B), size: 30),
+            icon: Icon(Icons.menu, color: Color(0xFF325D67), size: 30),
             color: Colors.white, // Fondo blanco para el menú
             onSelected: (item) => selectedItem(context, item),
             itemBuilder: (context) => [
@@ -111,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       case 2:
         print("My bikes selected");
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => UserBicyclesScreen()),
+          MaterialPageRoute(builder: (context) => MyListedBikesScreen()),
         );
         break;
       case 3:

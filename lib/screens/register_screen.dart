@@ -1,3 +1,4 @@
+import 'package:ecobicimobileapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -194,7 +195,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Container(
                   width: double.infinity,
                   height: 50,
-                  child: TextButton(onPressed: () {}, child: Text("Crear cuenta", style: TextStyle(
+                  child: TextButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    ),
+                     child: Text("Crear cuenta", style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                   ),), style: ButtonStyle(

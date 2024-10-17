@@ -27,7 +27,7 @@ class _BicycleFormState extends State<BicycleForm> {
             icon: Icon(Icons.upload),
             label: Text('Upload Images'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.indigo,
+              backgroundColor: Color(0xFF325D67),
               padding: EdgeInsets.symmetric(vertical: 12),
             ),
           ),
@@ -42,7 +42,7 @@ class _BicycleFormState extends State<BicycleForm> {
                   )
                 : Text('Publish Bicycle'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.indigo,
+              backgroundColor: Color(0xFF325D67),
               padding: EdgeInsets.symmetric(vertical: 16),
             ),
           ),
