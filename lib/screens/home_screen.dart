@@ -1,3 +1,5 @@
+import 'package:ecobicimobileapp/screens/add_bicycle_screen.dart';
+import 'package:ecobicimobileapp/screens/user_bicycles_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/widgets/bottomNavigationBar.dart';
 import 'package:ecobicimobileapp/screens/screens.dart';
@@ -42,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             itemBuilder: (context) => [
               _buildMenuItem(0, 'Account Settings'),
               _buildMenuItem(1, 'Payment Details'),
-              _buildMenuItem(2, 'Preferences'),
+              _buildMenuItem(2, 'My bikes'),
               _buildMenuItem(3, 'Orders'),
               _buildMenuItem(4, 'Display'),
             ],
@@ -107,8 +109,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         // Aquí puedes redirigir a la pantalla de detalles de pago
         break;
       case 2:
-        print("Preferences selected");
-        // Aquí puedes redirigir a la pantalla de preferencias
+        print("My bikes selected");
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => UserBicyclesScreen()),
+        );
         break;
       case 3:
         print("Orders selected");
