@@ -2,10 +2,43 @@ import 'package:flutter/material.dart';
 
 class ExpandedBikeDetailsScreen extends StatefulWidget {
   @override
-  _ExpandedBikeDetailsScreenState createState() => _ExpandedBikeDetailsScreenState();
+  _ExpandedBikeDetailsScreenState createState() =>
+      _ExpandedBikeDetailsScreenState();
 }
 
 class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
+  final List<Map<String, dynamic>> listedBikes = [
+    {
+      'id': '1',
+      'name': 'Mountain Explorer',
+      'type': 'Mountain Bike',
+      'pricePerHour': 15,
+      'status': 'Available',
+      'rating': 4.8,
+      'totalRents': 12,
+      'earnings': 'S/ 450.00',
+    },
+    {
+      'id': '2',
+      'name': 'City Cruiser Pro',
+      'type': 'City Bike',
+      'pricePerHour': 12,
+      'status': 'Rented',
+      'rating': 4.5,
+      'totalRents': 8,
+      'earnings': 'S/ 320.00',
+    },
+    {
+      'id': '3',
+      'name': 'Road Master Elite',
+      'type': 'Road Bike',
+      'pricePerHour': 18,
+      'status': 'Maintenance',
+      'rating': 4.9,
+      'totalRents': 15,
+      'earnings': 'S/ 580.00',
+    },
+  ];
   bool isExpanded = false;
 
   @override
@@ -13,17 +46,16 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          'My Listed Bikes',
-          style: TextStyle(
-            color: Color(0xFF325D67),
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-        )
-      ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+            'My Listed Bikes',
+            style: TextStyle(
+              color: Color(0xFF325D67),
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          )),
       body: ListView(
         padding: EdgeInsets.all(16),
         children: [
@@ -62,7 +94,8 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Text('This Month', style: TextStyle(color: Colors.white)),
+                child:
+                    Text('This Month', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -70,7 +103,11 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('S/ 500.00', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+              Text('S/ 1,500.00',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold)),
               Text('+12.5%', style: TextStyle(color: Colors.greenAccent)),
             ],
           ),
@@ -82,9 +119,9 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
   Widget _buildStatsRow() {
     return Row(
       children: [
-        Expanded(child: _buildStatCard('Active since', '10/08/2024', Icons.pedal_bike)),
+        Expanded(child: _buildStatCard('Active bikes', '2', Icons.pedal_bike)),
         SizedBox(width: 16),
-        Expanded(child: _buildStatCard('Total Rentals', '10', Icons.checklist)),
+        Expanded(child: _buildStatCard('Total Rentals', '35', Icons.checklist)),
       ],
     );
   }
@@ -103,7 +140,8 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(value,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Text(title, style: TextStyle(color: Colors.grey)),
             ],
           ),
@@ -144,8 +182,11 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Mountain Explorer', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        Text('Mountain Bike', style: TextStyle(color: Colors.grey)),
+                        Text('Mountain Explorer',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('Mountain Bike',
+                            style: TextStyle(color: Colors.grey)),
                       ],
                     ),
                   ),
@@ -155,7 +196,8 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
                       color: Colors.green.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text('Available', style: TextStyle(color: Colors.green)),
+                    child: Text('Available',
+                        style: TextStyle(color: Colors.green)),
                   ),
                 ],
               ),
@@ -167,14 +209,18 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Ficha Técnica', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text('Ficha Técnica',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     SizedBox(height: 8),
                     Text('• Marca: Trek'),
                     Text('• Modelo: X-Caliber 8'),
                     Text('• Año: 2023'),
                     Text('• Talla: M'),
                     SizedBox(height: 16),
-                    Text('Estadísticas de Renta', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text('Estadísticas de Renta',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     SizedBox(height: 8),
                     Text('Cantidad de rentas: 12'),
                     Text('Calificación promedio: 4.8'),
@@ -183,8 +229,10 @@ class _ExpandedBikeDetailsScreenState extends State<ExpandedBikeDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _buildActionButton('Editar', Icons.edit, Colors.blue),
-                        _buildActionButton('Deshabilitar', Icons.block, Colors.orange),
-                        _buildActionButton('Eliminar', Icons.delete, Colors.red),
+                        _buildActionButton(
+                            'Deshabilitar', Icons.block, Colors.orange),
+                        _buildActionButton(
+                            'Eliminar', Icons.delete, Colors.red),
                       ],
                     ),
                   ],
