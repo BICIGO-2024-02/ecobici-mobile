@@ -16,8 +16,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.all(12),
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        height: 60, // Ajusta la altura del BottomNavigationBar
+        padding: EdgeInsets.symmetric(horizontal: 30), // Ajusta el padding para que no sea demasiado alto
+        margin: EdgeInsets.only(bottom: 10, left: 30, right: 30), 
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.8),
           borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -38,10 +39,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
               onTap: () {
                 onItemTapped(index); // Llamamos al callback cuando se toque el ícono
               },
-              child: SizedBox(
-                width: 36,
-                height: 36,
-                child: Icon(icons[index], color: Color(0xFF26348B)),
+              child: Icon(
+                icons[index],
+                size: 28, // Ajusta el tamaño del ícono
+                color: index == selectedIndex
+                    ? Color(0xFF26348B)
+                    : Colors.black54, // Cambia el color del ícono cuando está seleccionado
               ),
             ),
           ),
