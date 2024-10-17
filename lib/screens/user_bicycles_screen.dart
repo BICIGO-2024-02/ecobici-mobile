@@ -1,7 +1,13 @@
-import 'package:ecobicimobileapp/screens/add_bicycle_screen.dart';
+import 'package:ecobicimobileapp/screens/edit_bicycle_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:ecobicimobileapp/screens/add_bicycle_screen.dart';
 
-class MyListedBikesScreen extends StatelessWidget {
+class MyListedBikesScreen extends StatefulWidget {
+  @override
+  _MyListedBikesScreenState createState() => _MyListedBikesScreenState();
+}
+
+class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
   final List<Map<String, dynamic>> listedBikes = [
     {
       'id': '1',
@@ -12,6 +18,8 @@ class MyListedBikesScreen extends StatelessWidget {
       'rating': 4.8,
       'totalRents': 12,
       'earnings': 'S/ 450.00',
+      'isExpanded': false,
+      'technicalInfo': 'Frame: Aluminum, Gears: 21-speed, Weight: 13.5 kg',
     },
     {
       'id': '2',
@@ -22,6 +30,8 @@ class MyListedBikesScreen extends StatelessWidget {
       'rating': 4.5,
       'totalRents': 8,
       'earnings': 'S/ 320.00',
+      'isExpanded': false,
+      'technicalInfo': 'Frame: Steel, Gears: 7-speed, Weight: 14.2 kg',
     },
     {
       'id': '3',
@@ -32,6 +42,8 @@ class MyListedBikesScreen extends StatelessWidget {
       'rating': 4.9,
       'totalRents': 15,
       'earnings': 'S/ 580.00',
+      'isExpanded': false,
+      'technicalInfo': 'Frame: Carbon Fiber, Gears: 22-speed, Weight: 8.1 kg',
     },
   ];
 
@@ -91,7 +103,8 @@ class MyListedBikesScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(20),
@@ -165,130 +178,188 @@ class MyListedBikesScreen extends StatelessWidget {
               itemCount: listedBikes.length,
               itemBuilder: (context, index) {
                 final bike = listedBikes[index];
-                return Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(16),
-                    child: InkWell(
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      bike['isExpanded'] = !bike['isExpanded'];
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    margin: EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
-                      onTap: () {},
-                      child: Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFE6E1F4),
-                                    borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFE6E1F4),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Icon(
+                                      Icons.pedal_bike,
+                                      color: Color(0xFF325D67),
+                                      size: 30,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    Icons.pedal_bike,
-                                    color: Color(0xFF325D67),
-                                    size: 30,
+                                  SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          bike['name'],
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF325D67),
+                                          ),
+                                        ),
+                                        SizedBox(height: 4),
+                                        Text(
+                                          bike['type'],
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  _buildStatusBadge(bike['status']),
+                                ],
+                              ),
+                              SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        bike['name'],
+                                        'Price per hour',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          color: Colors.grey[600],
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      Text(
+                                        'S/ ${bike['pricePerHour']}.00',
+                                        style: TextStyle(
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF325D67),
                                         ),
                                       ),
-                                      SizedBox(height: 4),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.star,
+                                            size: 16,
+                                            color: Colors.amber,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            '${bike['rating']}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF325D67),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                       Text(
-                                        bike['type'],
+                                        '${bike['totalRents']} rentals',
                                         style: TextStyle(
                                           color: Colors.grey[600],
-                                          fontSize: 14,
+                                          fontSize: 12,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                _buildStatusBadge(bike['status']),
-                              ],
-                            ),
-                            SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                                ],
+                              ),
+                              if (bike['isExpanded'])
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    SizedBox(height: 16),
                                     Text(
-                                      'Price per hour',
-                                      style: TextStyle(
-                                        color: Colors.grey[600],
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Text(
-                                      'S/ ${bike['pricePerHour']}.00',
+                                      'Technical Information:',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Color(0xFF325D67),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
+                                    SizedBox(height: 8),
+                                    Text(
+                                      bike['technicalInfo'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Icon(
-                                          Icons.star,
-                                          size: 16,
-                                          color: Colors.amber,
+                                        _buildActionButton(
+                                          icon: Icons.edit,
+                                          label: 'Edit',
+                                          onPressed: () {
+                                            // Implement edit functionality
+                                          },
                                         ),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          '${bike['rating']}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF325D67),
-                                          ),
+                                        _buildActionButton(
+                                          icon: Icons.block,
+                                          label: 'Disable',
+                                          onPressed: () {
+                                            // Implement disable functionality
+                                          },
+                                        ),
+                                        _buildActionButton(
+                                          icon: Icons.delete,
+                                          label: 'Delete',
+                                          onPressed: () {
+                                            // Implement delete functionality
+                                          },
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                      '${bike['totalRents']} rentals',
-                                      style: TextStyle(
-                                        color: Colors.grey[600],
-                                        fontSize: 12,
-                                      ),
-                                    ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 );
@@ -299,16 +370,17 @@ class MyListedBikesScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddBikeScreen()),
-                  ),
+          context,
+          MaterialPageRoute(builder: (context) => AddBikeScreen()),
+        ),
         backgroundColor: Color(0xFF325D67),
         child: Icon(Icons.add),
-      )
+      ),
     );
   }
 
-  Widget _buildQuickStat(String label, String value, IconData icon, Color color) {
+  Widget _buildQuickStat(
+      String label, String value, IconData icon, Color color) {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -393,27 +465,38 @@ class MyListedBikesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isSelected) {
-    return Container(
-      width: 70,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? Color(0xFF325D67) : Colors.grey[400],
-            size: 24,
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      icon: Icon(icon, size: 18),
+      label: Text(label),
+      onPressed: () async {
+        final updatedBike = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditBikeScreen(bike: listedBikes[0]),
           ),
-          SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: isSelected ? Color(0xFF325D67) : Colors.grey[400],
-              fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
-            ),
-          ),
-        ],
+        );
+        if (updatedBike != null) {
+          setState(() {
+            // Actualizar la bicicleta en la lista
+            final index =
+                listedBikes.indexWhere((b) => b['id'] == updatedBike['id']);
+            if (index != -1) {
+              listedBikes[index] = updatedBike;
+            }
+          });
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xFF325D67),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
     );
   }
