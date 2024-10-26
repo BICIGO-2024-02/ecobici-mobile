@@ -1,6 +1,8 @@
 import 'package:ecobicimobileapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../services/auth_service.dart';
+
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
 
@@ -10,6 +12,9 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   bool _obscureTextPassword = true;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -54,6 +59,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   ],
                 ),
                 child: TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     hintText: "Correo:",
                     enabledBorder: OutlineInputBorder(
@@ -81,6 +87,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   ],
                 ),
                 child: TextField(
+                  controller: _passwordController,
                   obscureText: _obscureTextPassword,
                   decoration: InputDecoration(
                     hintText: "Contraseña:",
@@ -113,10 +120,17 @@ class _SigninScreenState extends State<SigninScreen> {
                 width: double.infinity,
                 height: 50,
                 child: TextButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                  ),
+                  onPressed: () => {
+                    AuthService.login(_emailController.text, _passwordController.text).then((_) => {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Inicio de sesión exitoso"))),
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      ),
+                    }).catchError((error) => {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())))
+                    })
+                  },
                   child: Text(
                     "Inciar sesión",
                     style: TextStyle(
