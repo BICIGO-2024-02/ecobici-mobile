@@ -1,4 +1,5 @@
 import 'package:ecobicimobileapp/screens/signin_screen.dart';
+import 'package:ecobicimobileapp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/screens/screens.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: SigninScreen(),
+      home: SplashScreen(),
       routes: {
         'home':       (BuildContext context) => HomeScreen(),
         'register':   (BuildContext context) => RegisterScreen(),
