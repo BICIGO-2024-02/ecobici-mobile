@@ -1,4 +1,5 @@
 import 'package:ecobicimobileapp/screens/home_screen.dart';
+import 'package:ecobicimobileapp/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -11,6 +12,12 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscureTextPassword = true;
   bool _obscureTextRepeatPassword = true;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _repeatPasswordController = TextEditingController();
 
 
   void _togglePasswordVisibility(bool repeat) {
@@ -53,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   child: TextField(
+                    controller: _nameController,
                     decoration: InputDecoration(
                       hintText: "Nombre:",
                       enabledBorder: OutlineInputBorder(
@@ -85,6 +93,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   child: TextField(
+                    controller: _lastnameController,
+                    decoration: InputDecoration(
+                      hintText: "Apellido:",
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                              color: Color(0xFFC6C6C6),
+                              width: 1
+                          )
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                              color: Color(0xFFC6C6C6),
+                              width: 1
+                          )
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        blurRadius: 20,
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       hintText: "Correo:",
                       enabledBorder: OutlineInputBorder(
@@ -118,6 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   child: TextField(
+                    controller: _passwordController,
                     obscureText: _obscureTextPassword,
                     decoration: InputDecoration(
                       hintText: "Contraseña:",
@@ -160,6 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                   child: TextField(
+                    controller: _repeatPasswordController,
                     obscureText: _obscureTextRepeatPassword,
                     decoration: InputDecoration(
                       hintText: "Repite la contraseña:",
@@ -196,10 +240,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: double.infinity,
                   height: 50,
                   child: TextButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    ),
+                    onPressed: () => {
+                      AuthService.register(_nameController.text, _lastnameController.text, _emailController.text, _passwordController.text, _repeatPasswordController.text).then((_) => {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cuenta creada con éxito"))),
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                              (Route<dynamic> route) => false,
+                        ),
+                      }).catchError((error) => {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())))
+                      })
+                    },
                      child: Text("Crear cuenta", style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,

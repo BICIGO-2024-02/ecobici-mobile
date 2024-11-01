@@ -1,4 +1,6 @@
+import 'package:ecobicimobileapp/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileScreen extends StatelessWidget {
   @override
@@ -124,7 +126,18 @@ class UserProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.remove('access_token');
+                    await prefs.remove('refresh_token');
+                    await prefs.remove('user_id');
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SigninScreen()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF325D67),
                     foregroundColor: Colors.white,
