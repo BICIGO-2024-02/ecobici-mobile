@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:ecobicimobileapp/screens/home_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/widgets/payment_method_selector.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+import 'package:ecobicimobileapp/constants/keys.dart';
 
 class PaymentScreen extends StatefulWidget {
   final int totalCost;
@@ -14,7 +20,42 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   String selectedPaymentMethod = '';
+  
+  Map <String, dynamic>? intentPaymentData;
+  showPaymentSheet() async
+  {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((val){
+        intentPaymentData = null;
 
+      }).onError((errorMsg,sTrace)
+      {
+        if(kDebugMode)
+        {
+          print(errorMsg.toString() + sTrace.toString());
+        }
+      });
+    } 
+    on StripeException catch(error)
+    {
+      if (kDebugMode) {
+        print(error);
+      }
+
+      showDialog(
+        context: context, 
+        builder: (c)=> const AlertDialog(
+          content: Text("Cancelled"),
+        )
+      );
+    }
+    catch (errorMsg) {
+      if (kDebugMode) {
+        print(errorMsg);
+      }
+      print(errorMsg.toString());
+    }
+  }
   void updateSelectedPaymentMethod(String method) {
     setState(() {
       selectedPaymentMethod = method;
@@ -80,6 +121,68 @@ class _PaymentScreenState extends State<PaymentScreen> {
       },
     );
   }
+
+  makeIntentForPayment(amountToBeCharge, currency) async
+  {
+    try
+    {
+      Map<String, dynamic>? paymentInfo =
+      {
+        "amount": (int.parse(amountToBeCharge)*100).toString(),
+        "currency": currency,
+        "payment_method_types[]": "card",
+      };
+      var responseFromStripeAPI = await http.post(
+        Uri.parse("https://api.stripe.com/v1/payment_intents"),
+        body: paymentInfo,
+        headers:
+        {
+          "Authorization": "Bearer $SecretKey",
+          "Content-Type": "application/x-www-form-urlencoded" 
+        }
+      );
+
+      print("response from API = " + responseFromStripeAPI.body);
+      
+      return jsonDecode(responseFromStripeAPI.body);
+    }
+    catch(errorMsg)
+    {
+      if(kDebugMode)
+      {
+        print(errorMsg);
+      }
+      print(errorMsg.toString());
+    }
+  }
+  paymentSheetInitialization(amountToBeCharge, currency) async
+  {
+    try
+    {
+      intentPaymentData = await makeIntentForPayment(amountToBeCharge, currency);
+
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          allowsDelayedPaymentMethods: true,
+          paymentIntentClientSecret: intentPaymentData!["client_secret"],
+          style:ThemeMode.dark,
+          merchantDisplayName: "EcoBici"
+        )).then((val)
+        {
+          print(val);
+        });
+        showPaymentSheet();
+    }
+    catch(errorMsg, s){
+      if (kDebugMode) {
+        print(s);
+      }
+      print(errorMsg.toString());
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -169,14 +272,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Length: ${widget.rentalDays} day/s'),
-                    Text('Total: £${widget.totalCost}', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
+                    Text('Total: \$${widget.totalCost}', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
                   ],
                 ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: selectedPaymentMethod.isEmpty ? null : showConfirmationDialog,
-                child: Text('Pay Now'),
+                onPressed:(){
+                  paymentSheetInitialization(
+                  widget.totalCost.round().toString(), "USD"
+                );
+                },
+                child: Text('Pay Now USD ${widget.totalCost}'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF325D67),
                   foregroundColor: Colors.white,

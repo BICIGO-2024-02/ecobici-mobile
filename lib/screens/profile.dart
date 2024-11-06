@@ -115,7 +115,7 @@ class UserProfileScreen extends StatelessWidget {
 
             _buildMenuItem(Icons.person_outline, 'Personal Information'),
             _buildMenuItem(Icons.notifications_outlined, 'Notifications'),
-            _buildMenuItem(Icons.payment_outlined, 'Payment Methods'),
+
             _buildMenuItem(Icons.security_outlined, 'Security'),
             _buildMenuItem(Icons.help_outline, 'Help & Support'),
             
