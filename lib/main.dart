@@ -2,9 +2,16 @@ import 'package:ecobicimobileapp/screens/signin_screen.dart';
 import 'package:ecobicimobileapp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/screens/screens.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:ecobicimobileapp/constants/keys.dart';
 
-
-void main() => runApp(MyApp());
+void main() async
+{
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = PublishableKey;
+  await Stripe.instance.applySettings();
+  runApp( MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

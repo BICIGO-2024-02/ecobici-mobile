@@ -115,11 +115,10 @@ class UserProfileScreen extends StatelessWidget {
               ),
             ),
 
-            _buildMenuItem(context, Icons.person_outline, 'Personal Information'),
-            _buildMenuItem(context, Icons.notifications_outlined, 'Notifications'),
-            _buildMenuItem(context, Icons.payment_outlined, 'Payment Methods'),
-            _buildMenuItem(context, Icons.security_outlined, 'Security'),
-            _buildMenuItem(context, Icons.help_outline, 'Contáctanos'),
+            _buildMenuItem(Icons.person_outline, 'Personal Information'),
+            _buildMenuItem(Icons.notifications_outlined, 'Notifications'),
+            _buildMenuItem(Icons.security_outlined, 'Security'),
+            _buildMenuItem(Icons.help_outline, 'Help & Support'),
             
             // Logout Button
             Padding(
