@@ -139,7 +139,6 @@ class ResultsScreen extends StatelessWidget {
             brakes: "Not specified",
             weight: "Not specified",
             price: "S/ ${bicycle.bicyclePrice}/day",
-            bicycle: bicycle, // Añadimos la bicicleta aquí
           ),
         );
       },
