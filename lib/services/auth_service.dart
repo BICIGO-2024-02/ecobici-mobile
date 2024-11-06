@@ -18,6 +18,16 @@ class AuthService {
     await prefs.setString('refresh_token', authModel.refreshToken);
   }
 
+  static Future<int?> getCurrentUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('user_id');
+  }
+
+  static Future<String?> getCurrentUserToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
+
   static Future<void> register(
     String firstName,
     String lastName,
@@ -42,7 +52,7 @@ class AuthService {
         userBirthDate: birthDate,
         imageData: imageData,
       );
-      
+
       var url = Uri.parse('${Constants.url}/api/ecobici/v1/auth/register');
 
       var response = await http.post(
@@ -54,7 +64,7 @@ class AuthService {
       if (response.statusCode == 201) {
         var responseBody = json.decode(response.body);
         var authModel = AuthModel.fromJson(responseBody);
-        
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setInt('user_id', authModel.userId);
         await prefs.setString('access_token', authModel.accessToken);
@@ -117,10 +127,10 @@ class AuthService {
         throw Exception('Error de conectividad: $error');
       }
     } else {
-      print('No se encontró el user_id o el access_token en SharedPreferences.');
+      print(
+          'No se encontró el user_id o el access_token en SharedPreferences.');
     }
   }
-
 
   static Future<void> _saveUserData(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
