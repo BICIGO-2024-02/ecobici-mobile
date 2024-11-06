@@ -30,16 +30,41 @@ class _SigninScreenState extends State<SigninScreen> {
 
     try {
       await AuthService.login(_emailController.text, _passwordController.text);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Inicio de sesión exitoso")),
-      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${error.toString().split(':').last.trim()}')),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.error_outline, color: Colors.red, size: 50),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Error al iniciar sesión',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            content: Text('${error.toString().split(":").last.trim()}'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Aceptar'),
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(const Color(0xFF325D67)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
       );
     } finally {
       setState(() {
@@ -141,7 +166,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 ),
                 const SizedBox(height: 20),
                 _isLoading
-                    ? const CircularProgressIndicator(color: const Color(0xFF325D67))
+                    ? CircularProgressIndicator(color: const Color(0xFF325D67))
                     : SizedBox(
                   width: double.infinity,
                   height: 50,
