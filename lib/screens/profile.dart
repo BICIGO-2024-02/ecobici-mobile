@@ -2,6 +2,8 @@ import 'package:ecobicimobileapp/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'help_support_screen.dart';
+
 class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -115,7 +117,6 @@ class UserProfileScreen extends StatelessWidget {
 
             _buildMenuItem(Icons.person_outline, 'Personal Information'),
             _buildMenuItem(Icons.notifications_outlined, 'Notifications'),
-
             _buildMenuItem(Icons.security_outlined, 'Security'),
             _buildMenuItem(Icons.help_outline, 'Help & Support'),
             
@@ -185,7 +186,7 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String title) {
+  Widget _buildMenuItem(BuildContext context, IconData icon, String title) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
@@ -213,7 +214,19 @@ class UserProfileScreen extends StatelessWidget {
           size: 16,
           color: Color(0xFF325D67),
         ),
-        onTap: () {},
+        onTap: () {
+          if (title == 'Contáctanos') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HelpSupportScreen(
+                  userName: 'Abel  Cierto', // reemplaza con el nombre real del usuario
+                  userEmail: 'ciertoespiritu@gmail.com', // reemplaza con el correo real del usuario
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
