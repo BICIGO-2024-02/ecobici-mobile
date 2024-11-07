@@ -1,73 +1,12 @@
+import 'package:ecobicimobileapp/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ecobicimobileapp/screens/signin_screen.dart';
-import 'package:ecobicimobileapp/screens/help_support_screen.dart';
-import 'package:ecobicimobileapp/services/auth_service.dart';
-import 'package:ecobicimobileapp/services/user_service.dart';
-import 'package:ecobicimobileapp/models/user_model.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
-}
+import 'help_support_screen.dart';
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
-  User? userData;
-  bool isLoading = true;
-  String? error;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    try {
-      setState(() {
-        isLoading = true;
-        error = null;
-      });
-
-      final token = await AuthService.getCurrentUserToken();
-      final userId = await AuthService.getCurrentUserId();
-
-      if (token == null || userId == null) {
-        throw Exception('No authentication data found');
-      }
-
-      final user = await UserService.getUserById(userId, token);
-
-      if (user == null) {
-        throw Exception('No user data found');
-      }
-
-      setState(() {
-        userData = user;
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        error = e.toString();
-        isLoading = false;
-      });
-    }
-  }
-
+class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (error != null) {
-      return Scaffold(
-        body: Center(child: Text('Error: $error')),
-      );
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -89,206 +28,138 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: _loadUserData,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Profile Header
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE6E1F4),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Color(0xFF325D67).withOpacity(0.1),
-                          width: 2,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Profile Header
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFE6E1F4),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.person_outline,
+                      size: 40,
+                      color: Color(0xFF325D67),
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'John Doe',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF325D67),
+                          ),
                         ),
-                      ),
-                      child: ClipOval(
-                        child: userData?.imageData != null &&
-                                userData!.imageData!.isNotEmpty
-                            ? Image.network(
-                                userData!.imageData!,
-                                width: 80,
-                                height: 80,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  print(
-                                      'Error loading image: $error'); // Para debugging
-                                  return Icon(
-                                    Icons.person_outline,
-                                    size: 40,
-                                    color: Color(0xFF325D67),
-                                  );
-                                },
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
-                                    ),
-                                  );
-                                },
-                              )
-                            : Icon(
-                                Icons.person_outline,
-                                size: 40,
-                                color: Color(0xFF325D67),
-                              ),
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${userData?.firstName} ${userData?.lastName}',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF325D67),
-                            ),
+                        Text(
+                          'john.doe@example.com',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
                           ),
-                          Text(
-                            userData?.email ?? '',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 14,
-                            ),
-                          ),
-                          if (userData?.phone != null)
-                            Text(
-                              userData!.phone!,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 14,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Stats Section
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatItem(
-                        'Total Bicycles', '${userData?.bicycles.length ?? 0}'),
-                    _buildStatItem(
-                        'Joined', userData?.birthDate.split('T')[0] ?? 'N/A'),
-                  ],
-                ),
-              ),
-
-              // Menu Options
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  'Configuración',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF325D67),
-                  ),
-                ),
-              ),
-
-              _buildMenuItem(
-                  context, Icons.person_outline, 'información personal'),
-              _buildMenuItem(
-                  context, Icons.notifications_outlined, 'Notificationes'),
-              _buildMenuItem(
-                  context, Icons.security_outlined, 'Términos y condiciones'),
-              _buildMenuItem(context, Icons.help_outline, 'Contáctanos',
-                  onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HelpSupportScreen(
-                      userName: '${userData?.firstName} ${userData?.lastName}',
-                      userEmail: userData?.email ?? '',
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }),
+                ],
+              ),
+            ),
 
-              // Logout Button
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () => _handleLogout(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF325D67),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
+            // Stats Section
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildStatItem('Rides', '23'),
+                  _buildStatItem('Distance', '145 km'),
+                  _buildStatItem('Points', '890'),
+                ],
+              ),
+            ),
+
+            // Menu Options
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Account Settings',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF325D67),
+                ),
+              ),
+            ),
+
+            _buildMenuItem(context, Icons.person_outline, 'Personal Information'),
+            _buildMenuItem(context, Icons.notifications_outlined, 'Notifications'),
+            _buildMenuItem(context, Icons.security_outlined, 'Security'),
+            _buildMenuItem(context, Icons.help_outline, 'Contáctanos'),
+            
+            // Logout Button
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    await prefs.remove('access_token');
+                    await prefs.remove('refresh_token');
+                    await prefs.remove('user_id');
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SigninScreen()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF325D67),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
-                      'Log Out',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    'Log Out',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-
-  Future<void> _handleLogout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('access_token');
-    await prefs.remove('refresh_token');
-    await prefs.remove('user_id');
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => SigninScreen()),
-      (Route<dynamic> route) => false,
     );
   }
 
@@ -315,8 +186,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget _buildMenuItem(BuildContext context, IconData icon, String title,
-      {VoidCallback? onTap}) {
+  Widget _buildMenuItem(BuildContext context, IconData icon, String title) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
@@ -344,7 +214,44 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           size: 16,
           color: Color(0xFF325D67),
         ),
-        onTap: onTap,
+        onTap: () {
+          if (title == 'Contáctanos') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HelpSupportScreen(
+                  userName: 'Abel  Cierto', // reemplaza con el nombre real del usuario
+                  userEmail: 'ciertoespiritu@gmail.com', // reemplaza con el correo real del usuario
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, String label, bool isSelected) {
+    return Container(
+      width: 70,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isSelected ? Color(0xFF325D67) : Colors.grey[400],
+            size: 24,
+          ),
+          SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? Color(0xFF325D67) : Colors.grey[400],
+              fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }
