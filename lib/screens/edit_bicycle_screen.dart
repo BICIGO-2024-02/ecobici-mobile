@@ -1,170 +1,271 @@
 import 'package:flutter/material.dart';
+import 'package:ecobicimobileapp/services/bicycle_service.dart';
+import 'package:ecobicimobileapp/models/bicycle_model.dart';
+import 'package:ecobicimobileapp/services/auth_service.dart';
 
 class EditBikeScreen extends StatefulWidget {
-  final Map<String, dynamic> bike;
+  final BicycleModel bicycle;
 
-  EditBikeScreen({required this.bike});
+  const EditBikeScreen({Key? key, required this.bicycle}) : super(key: key);
 
   @override
   _EditBikeScreenState createState() => _EditBikeScreenState();
 }
 
 class _EditBikeScreenState extends State<EditBikeScreen> {
-  late TextEditingController _nameController;
-  late TextEditingController _typeController;
-  late TextEditingController _priceController;
-  late TextEditingController _technicalInfoController;
-  late String _status;
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  late final TextEditingController _nameController;
+  late final TextEditingController _descriptionController;
+  late final TextEditingController _priceController;
+  late final TextEditingController _sizeController;
+  late final TextEditingController _modelController;
+  late final TextEditingController _imageUrlController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.bike['name']);
-    _typeController = TextEditingController(text: widget.bike['type']);
+    // Inicializar controllers con los valores existentes
+    _nameController = TextEditingController(text: widget.bicycle.bicycleName);
+    _descriptionController =
+        TextEditingController(text: widget.bicycle.bicycleDescription);
     _priceController =
-        TextEditingController(text: widget.bike['pricePerHour'].toString());
-    _technicalInfoController =
-        TextEditingController(text: widget.bike['technicalInfo']);
-    _status = widget.bike['status'];
+        TextEditingController(text: widget.bicycle.bicyclePrice.toString());
+    _sizeController = TextEditingController(text: widget.bicycle.bicycleSize);
+    _modelController = TextEditingController(text: widget.bicycle.bicycleModel);
+    _imageUrlController = TextEditingController(text: widget.bicycle.imageData);
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _typeController.dispose();
-    _priceController.dispose();
-    _technicalInfoController.dispose();
-    super.dispose();
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+
+      try {
+        final token = await AuthService.getCurrentUserToken();
+        final userId = await AuthService.getCurrentUserId();
+
+        if (token == null || userId == null) {
+          throw Exception('No authentication token found');
+        }
+
+        final bicycleService = BicycleService(
+          accessToken: token,
+          userId: userId.toString(),
+        );
+
+        final updatedBicycle = BicycleModel(
+          id: widget.bicycle.id, // Mantener el ID original
+          bicycleName: _nameController.text.trim(),
+          bicycleDescription: _descriptionController.text.trim(),
+          bicyclePrice: double.parse(_priceController.text.trim()),
+          bicycleSize: _sizeController.text.trim(),
+          bicycleModel: _modelController.text.trim(),
+          imageData: _imageUrlController.text.trim().isEmpty
+              ? ""
+              : _imageUrlController.text.trim(),
+        );
+
+        final result = await bicycleService.updateBicycle(
+            widget.bicycle.id, updatedBicycle);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bicycle updated successfully!')),
+        );
+
+        Navigator.pop(context, result);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      } finally {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF5F7FA),
       appBar: AppBar(
-        title: Text('Edit Bike', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color(0xFF325D67)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text('Edit Bike',
+            style: TextStyle(
+                color: Color(0xFF325D67), fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildTextField(_nameController, 'Bike Name'),
-            SizedBox(height: 16),
-            _buildTextField(_typeController, 'Bike Type'),
-            SizedBox(height: 16),
-            _buildTextField(_priceController, 'Price per Hour',
-                keyboardType: TextInputType.number),
-            SizedBox(height: 16),
-            _buildDropdown(),
-            SizedBox(height: 16),
-            _buildTextField(_technicalInfoController, 'Technical Information',
-                maxLines: 3),
-            SizedBox(height: 24),
-            ElevatedButton(
-              child: Text('Save Changes'),
-              onPressed: _saveChanges,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF325D67),
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+        padding: EdgeInsets.all(24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Edit Bike Details',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF325D67)),
+              ),
+              SizedBox(height: 24),
+              _buildTextField(
+                'Bike Name',
+                Icons.pedal_bike,
+                _nameController,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Please enter a bike name' : null,
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Description',
+                Icons.description,
+                _descriptionController,
+                validator: (value) => value?.isEmpty ?? true
+                    ? 'Please enter a description'
+                    : null,
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Price per day',
+                Icons.attach_money,
+                _priceController,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) return 'Please enter a price';
+                  if (double.tryParse(value!) == null)
+                    return 'Please enter a valid number';
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Size',
+                Icons.straighten,
+                _sizeController,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Please enter a size' : null,
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Model',
+                Icons.category,
+                _modelController,
+                validator: (value) =>
+                    value?.isEmpty ?? true ? 'Please enter a model' : null,
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Image URL (Optional)',
+                Icons.link,
+                _imageUrlController,
+              ),
+              SizedBox(height: 16),
+              if (_imageUrlController.text.isNotEmpty)
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      _imageUrlController.text,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Center(
+                        child: Text('Error loading image',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                    ),
+                  ),
+                ),
+              SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _submitForm,
+                child: _isLoading
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Text('Save Changes', style: TextStyle(fontSize: 18)),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF325D67),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  minimumSize: Size(double.infinity, 50),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label,
-      {int maxLines = 1, TextInputType? keyboardType}) {
+  Widget _buildTextField(
+    String label,
+    IconData icon,
+    TextEditingController controller, {
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: Offset(0, 2),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
           ),
         ],
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
+        keyboardType: keyboardType,
+        validator: validator,
         decoration: InputDecoration(
           labelText: label,
+          prefixIcon: Icon(icon, color: Color(0xFF325D67)),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
           filled: true,
           fillColor: Colors.white,
+          errorStyle: TextStyle(height: 0.8),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
-        maxLines: maxLines,
-        keyboardType: keyboardType,
       ),
     );
   }
 
-  Widget _buildDropdown() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: DropdownButtonFormField<String>(
-        value: _status,
-        decoration: InputDecoration(
-          labelText: 'Status',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-        items: ['Available', 'Rented', 'Maintenance'].map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (String? newValue) {
-          if (newValue != null) {
-            setState(() {
-              _status = newValue;
-            });
-          }
-        },
-      ),
-    );
-  }
-
-  void _saveChanges() {
-    final updatedBike = {
-      ...widget.bike,
-      'name': _nameController.text,
-      'type': _typeController.text,
-      'pricePerHour':
-          double.tryParse(_priceController.text) ?? widget.bike['pricePerHour'],
-      'status': _status,
-      'technicalInfo': _technicalInfoController.text,
-    };
-
-    print('Updated Bike: $updatedBike');
-    Navigator.of(context).pop(updatedBike);
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _priceController.dispose();
+    _sizeController.dispose();
+    _modelController.dispose();
+    _imageUrlController.dispose();
+    super.dispose();
   }
 }

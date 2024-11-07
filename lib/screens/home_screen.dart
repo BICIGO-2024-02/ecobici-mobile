@@ -11,7 +11,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   // Estado para controlar el índice de la pantalla activa
   int _selectedIndex = 0;
 
@@ -37,18 +38,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         // Barra superior con la foto del usuario y el botón hamburguesa a la derecha
         backgroundColor: Colors.white,
         elevation: 0,
-        automaticallyImplyLeading: false, // Esto oculta el ícono de 'back' si no es necesario
+        automaticallyImplyLeading:
+            false, // Esto oculta el ícono de 'back' si no es necesario
         actions: [
           PopupMenuButton<int>(
             icon: Icon(Icons.menu, color: Color(0xFF325D67), size: 30),
             color: Colors.white, // Fondo blanco para el menú
             onSelected: (item) => selectedItem(context, item),
             itemBuilder: (context) => [
-              _buildMenuItem(0, 'Account Settings'),
-              _buildMenuItem(1, 'Payment Details'),
-              _buildMenuItem(2, 'My bikes'),
-              _buildMenuItem(3, 'Orders'),
-              _buildMenuItem(4, 'Display'),
+              _buildMenuItem(0, 'Configuración'),
+              _buildMenuItem(2, 'Mis bicicletas')
             ],
           ),
           // Icono de la foto del usuario
@@ -62,11 +61,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
           ),
           // Botón tipo hamburguesa
-          
         ],
       ),
       body: SafeArea(
-        child: _widgetOptions.elementAt(_selectedIndex), 
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         icons: [
@@ -80,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
     );
   }
+
   // Función para construir los items del menú
   PopupMenuItem<int> _buildMenuItem(int value, String text) {
     return PopupMenuItem<int>(
@@ -90,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
     );
   }
+
   // Función para construir un divisor entre los items del menú
   PopupMenuItem<int> _buildDivider() {
     return PopupMenuItem<int>(
@@ -100,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
     );
   }
+
   void selectedItem(BuildContext context, int item) {
     switch (item) {
       case 0:

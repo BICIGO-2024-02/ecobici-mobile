@@ -3,7 +3,6 @@ import 'package:ecobicimobileapp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/screens/screens.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,9 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: SplashScreen(),
       routes: {
-        'home':       (BuildContext context) => HomeScreen(),
-        'register':   (BuildContext context) => RegisterScreen(),
-        'signin':     (BuildContext context) => SigninScreen(),
+        'home': (BuildContext context) => HomeScreen(),
+        'register': (BuildContext context) => RegisterScreen(),
+        'signin': (BuildContext context) => SigninScreen(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,

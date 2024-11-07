@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:ecobicimobileapp/widgets/bottomBikeDetailSheet.dart';
+import 'package:ecobicimobileapp/services/bicycle_service.dart';
+import 'package:ecobicimobileapp/services/auth_service.dart';
+import 'package:ecobicimobileapp/models/bicycle_model.dart';
 
 class ResultsScreen extends StatelessWidget {
+  final AuthService _authService = AuthService();
+  // Removemos el late y hacemos nullable el _bicycleService
+  BicycleService? _bicycleService;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,57 +30,67 @@ class ResultsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '15 Results',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black54,
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildResultCard(
-                    context,
-                    name: 'Giant ATX 2',
-                    type: 'Mountain Bike',
-                    price: 'S/ 30/day',
-                    frameSize: '19 inches',
-                    frameMaterial: 'Aluminium',
-                    gears: '21',
-                    brakes: 'Disc Brakes',
-                    weight: '15 kg',
+            FutureBuilder<List<BicycleModel>>(
+              future: _getBicycles(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+
+                final bicycles = snapshot.data ?? [];
+
+                return Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${bicycles.length} Results',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: bicycles.length,
+                          itemBuilder: (context, index) {
+                            final bicycle = bicycles[index];
+                            return _buildResultCard(
+                              context,
+                              bicycle: bicycle,
+                            );
+                          },
+                        ),
+                      ),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            // Limpiamos el servicio antes de recargar
+                            _bicycleService = null;
+                            (context as Element).markNeedsBuild();
+                          },
+                          child: Text(
+                            'Reload',
+                            style: TextStyle(
+                              color: Color(0xFF325D67),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  _buildResultCard(
-                    context,
-                    name: 'Trek Marlin 5',
-                    type: 'Road Bike',
-                    price: 'S/ 25/day',
-                    frameSize: '17 inches',
-                    frameMaterial: 'Carbon',
-                    gears: '24',
-                    brakes: 'Rim Brakes',
-                    weight: '14 kg',
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  // Acción para mostrar más resultados
-                },
-                child: Text(
-                  'View All',
-                  style: TextStyle(
-                    color: Color(0xFF325D67),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -82,39 +98,53 @@ class ResultsScreen extends StatelessWidget {
     );
   }
 
-   // Método para crear la tarjeta de resultados
+  Future<List<BicycleModel>> _getBicycles() async {
+    // Si ya existe el servicio, lo usamos directamente
+    if (_bicycleService != null) {
+      return _bicycleService!.getAllBicycles();
+    }
+
+    // Si no existe, lo inicializamos
+    final token = await AuthService.getCurrentUserToken();
+    final userId = await AuthService.getCurrentUserId();
+
+    if (token == null || userId == null) {
+      throw Exception('No se encontró token o userId');
+    }
+
+    _bicycleService = BicycleService(
+      accessToken: token,
+      userId: userId.toString(),
+    );
+
+    return _bicycleService!.getAllBicycles();
+  }
+
   Widget _buildResultCard(
     BuildContext context, {
-    required String name,
-    required String type,
-    required String price,
-    required String frameSize,
-    required String frameMaterial,
-    required String gears,
-    required String brakes,
-    required String weight,
+    required BicycleModel bicycle,
   }) {
     return GestureDetector(
       onTap: () {
-        // Muestra el BottomSheet cuando se presiona la tarjeta
         showModalBottomSheet(
           context: context,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           builder: (context) => BikeDetailBottomSheet(
-            type: type,
-            frameSize: frameSize,
-            frameMaterial: frameMaterial,
-            gears: gears,
-            brakes: brakes,
-            weight: weight,
-            price: price,
+            type: bicycle.bicycleModel,
+            frameSize: bicycle.bicycleSize,
+            frameMaterial: "Not specified",
+            gears: "Not specified",
+            brakes: "Not specified",
+            weight: "Not specified",
+            price: "S/ ${bicycle.bicyclePrice}/day",
+            bicycle: bicycle, // Añadimos la bicicleta aquí
           ),
         );
       },
       child: Card(
-        color: Colors.white, // Color blanco para las tarjetas
+        color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -130,7 +160,7 @@ class ResultsScreen extends StatelessWidget {
                   color: Colors.grey[200],
                   height: 80,
                   width: 80,
-                  child: Icon(Icons.directions_bike, size: 50), // Placeholder para la imagen
+                  child: Icon(Icons.directions_bike, size: 50),
                 ),
               ),
               SizedBox(width: 20),
@@ -139,7 +169,7 @@ class ResultsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      bicycle.bicycleName,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -148,7 +178,7 @@ class ResultsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      type,
+                      bicycle.bicycleDescription,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black54,
@@ -158,7 +188,7 @@ class ResultsScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                price,
+                "S/ ${bicycle.bicyclePrice}/day",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

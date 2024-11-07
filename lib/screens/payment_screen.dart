@@ -1,26 +1,23 @@
-import 'package:ecobicimobileapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ecobicimobileapp/widgets/payment_method_selector.dart';
+import 'package:ecobicimobileapp/screens/home_screen.dart';
+import 'package:ecobicimobileapp/models/bicycle_model.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final int totalCost;
+  final double totalCost;
   final int rentalDays;
+  final BicycleModel bicycle;
 
-  PaymentScreen({required this.totalCost, required this.rentalDays});
+  PaymentScreen({
+    required this.totalCost,
+    required this.rentalDays,
+    required this.bicycle,
+  });
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  String selectedPaymentMethod = '';
-
-  void updateSelectedPaymentMethod(String method) {
-    setState(() {
-      selectedPaymentMethod = method;
-    });
-  }
-
   void showConfirmationDialog() {
     showDialog(
       context: context,
@@ -29,12 +26,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: Text('Booking Confirmed', style: TextStyle(color: Color(0xFF325D67))),
+          title: Text('Booking Confirmed',
+              style: TextStyle(color: Color(0xFF325D67))),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Audi A3 Sportsback 2.0l Turbo',
+                widget.bicycle.bicycleName,
                 style: TextStyle(
                   color: Color(0xFF325D67),
                   fontWeight: FontWeight.bold,
@@ -43,15 +41,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
               SizedBox(height: 20),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  'https://www.brilliant.co/cdn/shop/products/L-Train-Grey-1-correct-angle.jpg?v=1499894699',
+                child: Container(
                   height: 120,
                   width: 120,
-                  fit: BoxFit.cover,
+                  color: Colors.grey[200],
+                  child: Icon(Icons.directions_bike, size: 80),
                 ),
               ),
               SizedBox(height: 20),
-              Text('Congratulations!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Congratulations!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),
           actions: [
@@ -116,27 +115,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('You have chosen', style: TextStyle(fontSize: 18, color: Color(0xFF325D67))),
+                    Text('You have chosen',
+                        style:
+                            TextStyle(fontSize: 18, color: Color(0xFF325D67))),
                     SizedBox(height: 16),
                     Row(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            'https://www.brilliant.co/cdn/shop/products/L-Train-Grey-1-correct-angle.jpg?v=1499894699',
+                          child: Container(
                             height: 80,
                             width: 80,
-                            fit: BoxFit.cover,
+                            color: Colors.grey[200],
+                            child: Icon(Icons.directions_bike, size: 50),
                           ),
                         ),
                         SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Bike Model XYZ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                            Text('Manual', style: TextStyle(color: Colors.grey)),
-                            Text('£175/day', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(widget.bicycle.bicycleName,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                              Text(widget.bicycle.bicycleModel,
+                                  style: TextStyle(color: Colors.grey)),
+                              Text('S/ ${widget.bicycle.bicyclePrice}/day',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF325D67))),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -144,12 +154,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Payment Methods', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
-              SizedBox(height: 16),
-              PaymentMethodSelector(
-                selectedPaymentMethod: selectedPaymentMethod,
-                onPaymentMethodSelected: updateSelectedPaymentMethod,
-              ),
+              Text('Payment Summary',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF325D67))),
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(16),
@@ -169,14 +178,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Length: ${widget.rentalDays} day/s'),
-                    Text('Total: £${widget.totalCost}', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
+                    Text('Total: S/ ${widget.totalCost}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF325D67))),
                   ],
                 ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: selectedPaymentMethod.isEmpty ? null : showConfirmationDialog,
-                child: Text('Pay Now'),
+                onPressed: showConfirmationDialog,
+                child: Text('Confirm Booking'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF325D67),
                   foregroundColor: Colors.white,
