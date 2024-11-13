@@ -35,4 +35,40 @@ class RentService {
       throw Exception('Error creating rent: $e');
     }
   }
+
+  Future<List<RentModel>> getUserRentals(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/user/$userId'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        // Procesar la respuesta si es exitosa
+        try {
+          final List<dynamic> data = json.decode(response.body);
+          print('Decoded data: $data');
+
+          // Mapear los datos a objetos RentModel
+          List<RentModel> rentals = data.map((rental) => RentModel.fromJson(rental)).toList();
+          return rentals;
+        } catch (e) {
+          print('Error al decodificar la respuesta: $e');
+          throw Exception('Failed to parse response');
+        }
+      } else {
+        print('Error en la respuesta de la API: ${response.statusCode}');
+        throw Exception('Failed to load rentals');
+      }
+    } catch (e) {
+      print('Error en la solicitud: $e');
+      throw Exception('Error fetching rentals: $e');
+    }
+  }
+
 }

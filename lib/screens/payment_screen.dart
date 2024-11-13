@@ -110,7 +110,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       (Route<dynamic> route) => false,
                 );
               },
-              child: Text('Go to Home'),
+              child: Text('Ir al inicio'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF325D67),
                 foregroundColor: Colors.white,

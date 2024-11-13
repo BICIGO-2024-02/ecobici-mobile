@@ -5,7 +5,8 @@ class RentModel {
   final String rentStartDate;
   final String rentEndDate;
   final double rentPrice;
-  final BicycleModel bicycle; // Usamos BicycleModel en lugar de Bicycle
+  final BicycleModel bicycle;
+  final int userId;
 
   RentModel({
     required this.id,
@@ -13,6 +14,7 @@ class RentModel {
     required this.rentEndDate,
     required this.rentPrice,
     required this.bicycle,
+    required this.userId,
   });
 
   // Método para convertir un JSON a un objeto Rent
@@ -23,7 +25,8 @@ class RentModel {
       rentEndDate: json['rentEndDate'],
       rentPrice: json['rentPrice'].toDouble(),
       bicycle:
-      BicycleModel.fromJson(json['bicycle']), // Usamos BicycleModel aquí
+      BicycleModel.fromJson(json['bicycle']),
+      userId: json['userId'],
     );
   }
 
@@ -35,6 +38,7 @@ class RentModel {
       'rentEndDate': rentEndDate,
       'rentPrice': rentPrice,
       'bicycle': bicycle.toJson(),
+      'userId' : userId,
     };
   }
 }
