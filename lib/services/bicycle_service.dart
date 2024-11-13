@@ -12,9 +12,9 @@ class BicycleService {
 
   // Headers with authentication
   Map<String, String> get _headers => {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      };
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $accessToken',
+  };
 
   // Get all bicycles
   Future<List<BicycleModel>> getAllBicycles() async {

@@ -245,7 +245,7 @@ class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
                                         MaterialPageRoute(
                                           builder: (context) => EditBikeScreen(
                                               bicycle:
-                                                  bike), // Cambiado de bicycle a bike
+                                              bike), // Cambiado de bicycle a bike
                                         ),
                                       );
                                       if (result != null) {

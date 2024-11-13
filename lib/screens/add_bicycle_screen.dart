@@ -271,13 +271,13 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
   }
 
   Widget _buildTextField(
-    String label,
-    IconData icon,
-    TextEditingController controller, {
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
-    Widget? suffixIcon,
-  }) {
+      String label,
+      IconData icon,
+      TextEditingController controller, {
+        TextInputType? keyboardType,
+        String? Function(String?)? validator,
+        Widget? suffixIcon,
+      }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

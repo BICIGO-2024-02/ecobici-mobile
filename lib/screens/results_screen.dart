@@ -121,9 +121,9 @@ class ResultsScreen extends StatelessWidget {
   }
 
   Widget _buildResultCard(
-    BuildContext context, {
-    required BicycleModel bicycle,
-  }) {
+      BuildContext context, {
+        required BicycleModel bicycle,
+      }) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -139,6 +139,7 @@ class ResultsScreen extends StatelessWidget {
             brakes: "Not specified",
             weight: "Not specified",
             price: "S/ ${bicycle.bicyclePrice}/day",
+            bicycle: bicycle, // Añadimos la bicicleta aquí
           ),
         );
       },

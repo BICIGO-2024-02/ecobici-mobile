@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen>
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading:
-            false, // Esto oculta el ícono de 'back' si no es necesario
+        false, // Esto oculta el ícono de 'back' si no es necesario
         actions: [
           PopupMenuButton<int>(
             icon: Icon(Icons.menu, color: Color(0xFF325D67), size: 30),

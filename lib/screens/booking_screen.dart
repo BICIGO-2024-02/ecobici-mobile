@@ -219,21 +219,29 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: isLoading ? null : createRent,
-                child: isLoading
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : Text('Confirm'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF325D67),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => PaymentScreen(
+                      totalCost: totalCost,
+                      rentalDays: selectedDateRange?.duration.inDays ?? 0,
+                      bicycle: widget.bicycle  // Cambiado de this.bicycle a widget.bicycle
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  minimumSize: Size(double.infinity, 50),
                 ),
+              );
+            },
+            child: Text('Confirm'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF325D67),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
+              padding: EdgeInsets.symmetric(vertical: 15),
+              minimumSize: Size(double.infinity, 50),
+            ),
+          ),
             ],
           ),
         ),

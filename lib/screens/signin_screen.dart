@@ -57,7 +57,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 child: const Text('Aceptar'),
                 style: ButtonStyle(
                   foregroundColor:
-                      MaterialStateProperty.all(const Color(0xFF325D67)),
+                  MaterialStateProperty.all(const Color(0xFF325D67)),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -169,26 +169,26 @@ class _SigninScreenState extends State<SigninScreen> {
                 _isLoading
                     ? CircularProgressIndicator(color: const Color(0xFF325D67))
                     : SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: TextButton(
-                          onPressed: _handleLogin,
-                          child: const Text(
-                            "Iniciar sesión",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color(0xFF325D67)),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30))),
-                          ),
-                        ),
+                  width: double.infinity,
+                  height: 50,
+                  child: TextButton(
+                    onPressed: _handleLogin,
+                    child: const Text(
+                      "Iniciar sesión",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
                       ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color(0xFF325D67)),
+                      shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30))),
+                    ),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

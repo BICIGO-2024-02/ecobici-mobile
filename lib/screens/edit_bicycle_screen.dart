@@ -122,7 +122,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
                 Icons.pedal_bike,
                 _nameController,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter a bike name' : null,
+                value?.isEmpty ?? true ? 'Please enter a bike name' : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
@@ -152,7 +152,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
                 Icons.straighten,
                 _sizeController,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter a size' : null,
+                value?.isEmpty ?? true ? 'Please enter a size' : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
@@ -160,7 +160,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
                 Icons.category,
                 _modelController,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Please enter a model' : null,
+                value?.isEmpty ?? true ? 'Please enter a model' : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
@@ -220,12 +220,12 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
   }
 
   Widget _buildTextField(
-    String label,
-    IconData icon,
-    TextEditingController controller, {
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
-  }) {
+      String label,
+      IconData icon,
+      TextEditingController controller, {
+        TextInputType? keyboardType,
+        String? Function(String?)? validator,
+      }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

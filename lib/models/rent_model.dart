@@ -23,7 +23,7 @@ class RentModel {
       rentEndDate: json['rentEndDate'],
       rentPrice: json['rentPrice'].toDouble(),
       bicycle:
-          BicycleModel.fromJson(json['bicycle']), // Usamos BicycleModel aquí
+      BicycleModel.fromJson(json['bicycle']), // Usamos BicycleModel aquí
     );
   }
 

@@ -31,7 +31,7 @@ class HelpSupportScreen extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: ListTile(
           leading:
-              Icon(Icons.person_outline, color: Color(0xFF325D67), size: 40),
+          Icon(Icons.person_outline, color: Color(0xFF325D67), size: 40),
           title: Text(
             userName,
             style: TextStyle(

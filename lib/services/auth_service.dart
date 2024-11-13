@@ -29,15 +29,15 @@ class AuthService {
   }
 
   static Future<void> register(
-    String firstName,
-    String lastName,
-    String email,
-    String password,
-    String repeatPassword, {
-    String? phone,
-    DateTime? birthDate,
-    String? imageData,
-  }) async {
+      String firstName,
+      String lastName,
+      String email,
+      String password,
+      String repeatPassword, {
+        String? phone,
+        DateTime? birthDate,
+        String? imageData,
+      }) async {
     if (password != repeatPassword) {
       throw Exception('Las contraseñas no coinciden');
     }
