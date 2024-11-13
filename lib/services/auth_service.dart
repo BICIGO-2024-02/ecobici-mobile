@@ -135,11 +135,11 @@ class AuthService {
   static Future<void> _saveUserData(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    await prefs.setInt('user_id', user.id);
+    await prefs.setInt('user_id', user.id ?? 0);
     await prefs.setString('user_first_name', user.firstName);
     await prefs.setString('user_last_name', user.lastName);
     await prefs.setString('user_email', user.email);
-    await prefs.setString('user_password', user.password);
+    await prefs.setString('user_password', user.password ?? '');
     await prefs.setString('user_birth_date', user.birthDate);
 
     if (user.phone != null) {

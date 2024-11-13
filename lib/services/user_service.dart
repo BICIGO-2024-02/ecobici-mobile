@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../constants/constants.dart';
 import '../models/user_model.dart';
@@ -23,10 +24,10 @@ class UserService {
     }
   }
 
-  static Future<User?> getUserById(int userId, String accessToken) async {
+  static Future<User> getUserById(int userId, String accessToken) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/api/ecobici/v1/user/$userId'),
+        Uri.parse('$baseUrl/api/ecobici/v1/users/$userId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -36,12 +37,10 @@ class UserService {
       if (response.statusCode == 200) {
         return User.fromJson(jsonDecode(response.body));
       } else {
-        print('Error al obtener el usuario: ${response.statusCode}');
-        return null;
+        return Future.error('Error al obtener el usuario: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error de conectividad en getUserById: $error');
-      return null;
+      return Future.error('Error de conectividad en getUserById: $error');
     }
   }
 
@@ -62,18 +61,28 @@ class UserService {
     }
   }
 
-  Future<User> updateUser(int userId, User user, String accessToken) async {
+  static Future<void> updateUser(name, lastname, email) async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    int userId = prefs.getInt('user_id') ?? 0;
+    String accessToken = prefs.getString('access_token') ?? '';
+
     final response = await http.put(
-      Uri.parse("$baseUrl/users/$userId"),
+      Uri.parse("$baseUrl/api/ecobici/v1/users/$userId"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       },
-      body: jsonEncode(user.toJson()),
+      body: jsonEncode({
+        'userFirstName': name,
+        'userLastName': lastname,
+        'userEmail': email,
+      })
     );
 
     if (response.statusCode == 200) {
-      return User.fromJson(jsonDecode(response.body));
+      return;
     } else {
       throw Exception("Failed to update user");
     }

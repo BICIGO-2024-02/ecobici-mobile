@@ -1,20 +1,20 @@
 // User Model in Dart
 class User {
-  final int id;
+  final int? id;
   final String firstName;
   final String lastName;
   final String email;
-  final String password;
+  final String? password;
   final String? phone;
   final String birthDate;
   final String? imageData;
 
   User({
-    required this.id,
+    this.id,
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.password,
+    this.password,
     this.phone,
     required this.birthDate,
     this.imageData,
