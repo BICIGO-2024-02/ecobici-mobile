@@ -3,8 +3,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 class CustomCalendar extends StatefulWidget {
   final Function(DateTimeRange) onDateRangeSelected;
+  final List<DateTimeRange> disabledDates;
 
-  CustomCalendar({required this.onDateRangeSelected});
+  CustomCalendar({required this.onDateRangeSelected, required this.disabledDates});
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
@@ -14,6 +15,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   DateTime _focusedDay = DateTime.now();
+
+  bool _isDateDisabled(DateTime date) {
+    for (var range in widget.disabledDates) {
+      if (date.isAfter(range.start.subtract(Duration(days: 1))) &&
+          date.isBefore(range.end.add(Duration(days: 1)))) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +50,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
           color: Color(0xFF325D67),
           shape: BoxShape.circle,
         ),
+        disabledDecoration: BoxDecoration(
+          color: Colors.grey[300],
+          shape: BoxShape.circle,
+        ),
       ),
+      enabledDayPredicate: (day) => !_isDateDisabled(day),
     );
   }
 

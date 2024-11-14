@@ -303,13 +303,18 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
 
   String _getRentalStatus(RentModel rental) {
     final now = DateTime.now();
+    final startDate = DateTime.parse(rental.rentStartDate);
     final endDate = DateTime.parse(rental.rentEndDate);
-    if (endDate.isAfter(now)) {
-      return 'Active';
+
+    if (now.isBefore(startDate)) {
+      return 'Aún no empieza';
+    } else if (now.isAfter(startDate) && now.isBefore(endDate)) {
+      return 'Activo';
     } else {
-      return 'Completed';
+      return 'Completado';
     }
   }
+
 
   Widget _buildStatItem(String label, String value, Color textColor) {
     return Column(

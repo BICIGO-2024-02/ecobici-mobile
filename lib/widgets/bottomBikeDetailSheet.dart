@@ -3,23 +3,23 @@ import 'package:ecobicimobileapp/screens/booking_screen.dart';
 import 'package:ecobicimobileapp/models/bicycle_model.dart';
 
 class BikeDetailBottomSheet extends StatelessWidget {
-  final String type;
-  final String frameSize;
-  final String frameMaterial;
-  final String gears;
-  final String brakes;
-  final String weight;
+  final String name;
+  final String description;
+  final String model;
+  final String size;
+  final String pickUpLocation;
+  final String deliveryLocation;
   final String price;
   final BicycleModel bicycle; // Añadimos la bicicleta como parámetro
 
   const BikeDetailBottomSheet({
     Key? key,
-    required this.type,
-    required this.frameSize,
-    required this.frameMaterial,
-    required this.gears,
-    required this.brakes,
-    required this.weight,
+    required this.name,
+    required this.description,
+    required this.model,
+    required this.size,
+    required this.pickUpLocation,
+    required this.deliveryLocation,
     required this.price,
     required this.bicycle, // Añadimos el requerimiento de la bicicleta
   }) : super(key: key);
@@ -40,12 +40,12 @@ class BikeDetailBottomSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _buildInfoRow('Tipo', type),
-          _buildInfoRow('Tamaño del marco', frameSize),
-          _buildInfoRow('Material del marco', frameMaterial),
-          _buildInfoRow('Engranajes', gears),
-          _buildInfoRow('Frenos', brakes),
-          _buildInfoRow('Peso', weight),
+          _buildInfoRow('Nombre', name),
+          _buildInfoRow('Descripcion', description),
+          _buildInfoRow('Modelo', model),
+          _buildInfoRow('Tamaño', size),
+          _buildInfoRow('Lugar de recojo', pickUpLocation),
+          _buildInfoRow('Lugar de entrega', deliveryLocation),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => Navigator.push(

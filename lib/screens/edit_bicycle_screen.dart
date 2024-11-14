@@ -23,6 +23,8 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
   late final TextEditingController _sizeController;
   late final TextEditingController _modelController;
   late final TextEditingController _imageUrlController;
+  late final TextEditingController _pickUpLocationController;
+  late final TextEditingController _deliveryLocationController;
 
   @override
   void initState() {
@@ -36,6 +38,8 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
     _sizeController = TextEditingController(text: widget.bicycle.bicycleSize);
     _modelController = TextEditingController(text: widget.bicycle.bicycleModel);
     _imageUrlController = TextEditingController(text: widget.bicycle.imageData);
+    _pickUpLocationController = TextEditingController(text: widget.bicycle.pickUpLocation);
+    _deliveryLocationController = TextEditingController(text: widget.bicycle.deliveryLocation);
   }
 
   Future<void> _submitForm() async {
@@ -64,6 +68,8 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
           imageData: _imageUrlController.text.trim().isEmpty
               ? null
               : _imageUrlController.text.trim(),
+          pickUpLocation: _pickUpLocationController.text.trim(),
+          deliveryLocation: _deliveryLocationController.text.trim(),
         );
 
         final updatedBicycle = await bicycleService.updateBicycle(
@@ -77,6 +83,8 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
         _sizeController.text = updatedBicycle.bicycleSize;
         _modelController.text = updatedBicycle.bicycleModel;
         _imageUrlController.text = updatedBicycle.imageData ?? '';
+        _pickUpLocationController.text = updatedBicycle.pickUpLocation;
+        _deliveryLocationController.text = updatedBicycle.deliveryLocation;
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('¡Bicicleta actualizada con éxito!')),
@@ -170,6 +178,26 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
                 _modelController,
                 validator: (value) =>
                 value?.isEmpty ?? true ? 'Por favor introduce un modelo' : null,
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Lugar de recojo',
+                Icons.place,
+                _pickUpLocationController,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) return 'Por favor introduce el lugar de recojo';
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Lugar de entrega',
+                Icons.place,
+                _deliveryLocationController,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) return 'Por favor introduce el lugar de entrega';
+                  return null;
+                },
               ),
               SizedBox(height: 16),
               _buildTextField(

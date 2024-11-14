@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/services/bicycle_service.dart';
 import 'package:ecobicimobileapp/models/bicycle_model.dart';
@@ -18,6 +20,8 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
   final _sizeController = TextEditingController();
   final _modelController = TextEditingController();
   final _imageUrlController = TextEditingController();
+  final _pickUpLocationController = TextEditingController();
+  final _deliveryLocationController = TextEditingController();
 
   @override
   void initState() {
@@ -89,10 +93,12 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
           bicyclePrice: double.parse(_priceController.text.trim()),
           bicycleSize: _sizeController.text.trim(),
           bicycleModel: _modelController.text.trim(),
-          imageData: _imageUrlController.text.trim().isEmpty
-              ? ""
-              : _imageUrlController.text.trim(),
+          imageData: _imageUrlController.text.trim().isEmpty ? "" : _imageUrlController.text.trim(),
+          pickUpLocation: _pickUpLocationController.text.trim(),
+          deliveryLocation: _deliveryLocationController.text.trim(),
         );
+
+        print('Bicycle data being sent: ${json.encode(newBicycle.toJson())}');
 
         final addedBicycle = await bicycleService.addBicycleToUser(newBicycle);
 
@@ -185,6 +191,26 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
                 _sizeController,
                 validator: (value) {
                   if (value?.isEmpty ?? true) return 'Por favor introduce una talla';
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Lugar de recojo',
+                Icons.place,
+                _pickUpLocationController,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) return 'Por favor introduce el lugar de recojo';
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                'Lugar de entrega',
+                Icons.place,
+                _deliveryLocationController,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) return 'Por favor introduce el lugar de entrega';
                   return null;
                 },
               ),
@@ -319,6 +345,8 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
     _sizeController.dispose();
     _modelController.dispose();
     _imageUrlController.dispose();
+    _pickUpLocationController.dispose();
+    _deliveryLocationController.dispose();
     super.dispose();
   }
 }

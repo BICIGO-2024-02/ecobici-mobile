@@ -20,68 +20,39 @@ class _BookingScreenState extends State<BookingScreen> {
   DateTimeRange? selectedDateRange;
   double totalCost = 0.0;
   bool isLoading = false;
+  List<DateTimeRange> bookedDates = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBookedDates();
+  }
+
+  void _fetchBookedDates() async {
+    final token = await AuthService.getCurrentUserToken();
+
+    if (token == null) {
+      throw Exception('Se requiere autenticación');
+    }
+
+    final rentService = RentService(accessToken: token);
+    final rents = await rentService.getBicycleRentals(widget.bicycle.id); // Llamar al método de instancia
+    setState(() {
+      bookedDates = rents.map((rent) {
+        return DateTimeRange(
+          start: DateTime.parse(rent.rentStartDate),
+          end: DateTime.parse(rent.rentEndDate),
+        );
+      }).toList();
+    });
+  }
+
 
   void updateSelectedDateRange(DateTimeRange range) {
     setState(() {
       selectedDateRange = range;
       totalCost = range.duration.inDays * widget.bicycle.bicyclePrice;
     });
-  }
-
-  Future<void> createRent() async {
-    if (selectedDateRange == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor seleccione las fechas primero')),
-      );
-      return;
-    }
-
-    setState(() => isLoading = true);
-
-    try {
-      final token = await AuthService.getCurrentUserToken();
-
-      if (token == null) {
-        throw Exception('Se requiere autenticación');
-      }
-
-      final rentService = RentService(accessToken: token);
-
-      // Formatear las fechas al formato requerido "YYYY-MM-DD"
-      String startDate =
-          "${selectedDateRange!.start.year}-${selectedDateRange!.start.month.toString().padLeft(2, '0')}-${selectedDateRange!.start.day.toString().padLeft(2, '0')}";
-      String endDate =
-          "${selectedDateRange!.end.year}-${selectedDateRange!.end.month.toString().padLeft(2, '0')}-${selectedDateRange!.end.day.toString().padLeft(2, '0')}";
-
-      // Crear el request con el formato correcto
-      final rentRequest = RentRequestModel(
-        rentStartDate: startDate,
-        rentEndDate: endDate,
-        rentPrice: totalCost,
-        bicycleId: widget.bicycle.id,
-      );
-
-      final createdRent = await rentService.createRent(rentRequest);
-
-      if (createdRent != null) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => PaymentScreen(
-              totalCost: totalCost,
-              rentalDays: selectedDateRange?.duration.inDays ?? 0,
-              bicycle: widget.bicycle,
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      print('Error details: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error creating rent: $e')),
-      );
-    } finally {
-      setState(() => isLoading = false);
-    }
   }
 
   @override
@@ -189,6 +160,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
                 child: CustomCalendar(
                   onDateRangeSelected: updateSelectedDateRange,
+                  disabledDates: bookedDates,
                 ),
               ),
               SizedBox(height: 20),
@@ -219,29 +191,44 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => PaymentScreen(
-                      totalCost: totalCost,
-                      rentalDays: selectedDateRange?.duration.inDays ?? 0,
-                      bicycle: widget.bicycle  // Cambiado de this.bicycle a widget.bicycle
+              ElevatedButton(
+                onPressed: () {
+                  if (selectedDateRange == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Por favor seleccione las fechas primero')),
+                    );
+                    return;
+                  }
+
+                  // Formatear las fechas al formato requerido "YYYY-MM-DD"
+                  String startDate =
+                      "${selectedDateRange!.start.year}-${selectedDateRange!.start.month.toString().padLeft(2, '0')}-${selectedDateRange!.start.day.toString().padLeft(2, '0')}";
+                  String endDate =
+                      "${selectedDateRange!.end.year}-${selectedDateRange!.end.month.toString().padLeft(2, '0')}-${selectedDateRange!.end.day.toString().padLeft(2, '0')}";
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PaymentScreen(
+                        totalCost: totalCost,
+                        rentalDays: selectedDateRange?.duration.inDays ?? 0,
+                        bicycle: widget.bicycle,
+                        startDate: startDate,
+                        endDate: endDate,
+                      ),
+                    ),
+                  );
+                },
+                child: Text('Confirmar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF325D67),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  minimumSize: Size(double.infinity, 50),
                 ),
-              );
-            },
-            child: Text('Confirmar'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF325D67),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.symmetric(vertical: 15),
-              minimumSize: Size(double.infinity, 50),
-            ),
-          ),
             ],
           ),
         ),

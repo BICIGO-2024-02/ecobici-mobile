@@ -6,6 +6,8 @@ class BicycleModel {
   final String bicycleSize;
   final String bicycleModel;
   final String imageData;
+  final String pickUpLocation;
+  final String deliveryLocation;
 
   BicycleModel({
     required this.id,
@@ -15,6 +17,8 @@ class BicycleModel {
     required this.bicycleSize,
     required this.bicycleModel,
     required this.imageData,
+    required this.pickUpLocation,
+    required this.deliveryLocation
   });
 
   factory BicycleModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,8 @@ class BicycleModel {
       bicycleSize: json['bicycleSize'],
       bicycleModel: json['bicycleModel'],
       imageData: json['imageData'],
+      pickUpLocation: json['pickUpLocation'],
+      deliveryLocation: json['deliveryLocation']
     );
   }
 
@@ -38,6 +44,8 @@ class BicycleModel {
       'bicycleSize': bicycleSize,
       'bicycleModel': bicycleModel,
       'imageData': imageData,
+      'pickUpLocation': pickUpLocation,
+      'deliveryLocation': deliveryLocation
     };
   }
 }

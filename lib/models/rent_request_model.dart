@@ -3,12 +3,14 @@ class RentRequestModel {
   final String rentEndDate;
   final double rentPrice;
   final int bicycleId;
+  final int userId;
 
   RentRequestModel({
     required this.rentStartDate,
     required this.rentEndDate,
     required this.rentPrice,
     required this.bicycleId,
+    required this.userId
   });
 
   Map<String, dynamic> toJson() {
@@ -17,6 +19,7 @@ class RentRequestModel {
       'rentEndDate': rentEndDate,
       'rentPrice': rentPrice,
       'bicycleId': bicycleId,
+      'userId': userId,
     };
   }
 }
