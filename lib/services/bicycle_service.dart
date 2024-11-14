@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/bicycle_model.dart';
+import '../models/bicycle_update_dto.dart';
 
 class BicycleService {
   final String baseUrl =
@@ -53,23 +54,32 @@ class BicycleService {
     }
   }
 
-  // Update bicycle
-  Future<BicycleModel> updateBicycle(
-      int bicycleId, BicycleModel bicycle) async {
+  Future<BicycleModel> updateBicycle(int bicycleId, BicycleUpdateDto updateDto) async {
     try {
+      final url = Uri.parse('$baseUrl/bicycles/$bicycleId');
+      print('Sending PUT request to: $url');
+      print('Request body: ${json.encode(updateDto.toJson())}');
+
       final response = await http.put(
-        Uri.parse('$baseUrl/bicycles/$bicycleId'),
+        url,
         headers: _headers,
-        body: json.encode(bicycle.toJson()),
+        body: json.encode(updateDto.toJson()),
       );
 
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
-        return BicycleModel.fromJson(json.decode(response.body));
+        final updatedBicycleData = json.decode(response.body)['updatedData'];
+        return BicycleModel.fromJson(updatedBicycleData);
       } else {
-        throw Exception('Failed to update bicycle');
+        final errorMessage = 'Failed to update bicycle. Status code: ${response.statusCode}. Response: ${response.body}';
+        print(errorMessage);
+        throw Exception(errorMessage);
       }
     } catch (e) {
-      throw Exception('Error updating bicycle: $e');
+      print('Error updating bicycle: $e');
+      rethrow;
     }
   }
 

@@ -1,7 +1,15 @@
+import 'package:ecobicimobileapp/screens/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/widgets/bottomFilterSheet.dart';
 
-class BicycleSearchScreen extends StatelessWidget {
+class BicycleSearchScreen extends StatefulWidget {
+  @override
+  _BicycleSearchScreenState createState() => _BicycleSearchScreenState();
+}
+
+class _BicycleSearchScreenState extends State<BicycleSearchScreen> {
+  double _selectedBudget = 50;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,53 +73,7 @@ class BicycleSearchScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
-                Container(
-                  margin: EdgeInsets.only(
-                      right:
-                          40), // Usamos margin en lugar de padding para las sombras
-                  width: 70,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF325D67), // Color de fondo (azul)
-                    shape: BoxShape.rectangle, // Cambiar a rectángulo
-                    borderRadius:
-                        BorderRadius.circular(30), // Bordes redondeados
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xFF325D67).withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 10,
-                        offset: Offset(0, 4), // Sombra debajo del botón
-                      ),
-                    ],
-                  ),
-                  child: IconButton(
-                    iconSize: 24, // Tamaño del ícono
-                    icon: ColorFiltered(
-                      colorFilter: ColorFilter.mode(Colors.white,
-                          BlendMode.srcIn), // Convierte el ícono en blanco
-                      child: Image.asset(
-                        'assets/icons/filtrar.png', // Ruta de la imagen del ícono
-                        width: 24, // Ajusta el tamaño del ícono
-                        height: 24,
-                      ),
-                    ),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(
-                                  20)), // Bordes redondeados en la parte superior
-                        ),
-                        builder: (BuildContext context) {
-                          return FilterBottomSheet(); // Muestra el widget con los filtros
-                        },
-                      );
-                    },
-                  ),
-                )
+                SizedBox(width: 40),
               ],
             ),
             SizedBox(height: 30),
@@ -171,18 +133,42 @@ class BicycleSearchScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-
-            // Filtros de presupuesto
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40), // Mantén el padding
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBudgetButton("S/ 30"),
-                  _buildBudgetButton("S/ 70"),
-                  _buildBudgetButton("S/ 100"),
+                  _buildBudgetButton("S/ 30", 30),
+                  _buildBudgetButton("S/ 60", 60),
+                  _buildBudgetButton("S/ 100", 100),
                 ],
               ),
+            ),
+
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResultsScreen(budget: _selectedBudget),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF325D67),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  minimumSize: Size(double.infinity, 50),
+                ),
+                child: Text('Buscar', style: TextStyle(fontSize: 18)),
+              ),
+
             ),
 
             // Imagen de bicicleta (puedes ajustarlo a una imagen real o dejarlo así)
@@ -226,33 +212,41 @@ class BicycleSearchScreen extends StatelessWidget {
     );
   }
 
-  // Función para construir los botones de presupuesto
-  Widget _buildBudgetButton(String label) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF325D67).withOpacity(0.1), 
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: Offset(0, 4), // Posición de la sombra
+  Widget _buildBudgetButton(String label, double budget) {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _selectedBudget = budget;
+        });
+        _filterBicyclesByBudget(_selectedBudget);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: _selectedBudget == budget
+            ? Colors.white
+            : Color(0xFF325D67),
+        backgroundColor: _selectedBudget == budget
+            ? Color(0xFF325D67)
+            : Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: _selectedBudget == budget
+                ? Color(0xFF325D67)
+                : Color(0xFF325D67).withOpacity(0.5),
           ),
-        ],
-      ),
-      child: OutlinedButton(
-        onPressed: () {
-          // Acción cuando se selecciona un presupuesto
-        },
-        style: OutlinedButton.styleFrom(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          side: BorderSide(color: Color(0xFF325D67)),
         ),
-        child: Text(
-          label,
-          style: TextStyle(color: Color(0xFF325D67)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
+  }
+
+  void _filterBicyclesByBudget(double budget) {
+    print('Filtrar bicicletas por presupuesto: S/ $budget');
   }
 }

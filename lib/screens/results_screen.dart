@@ -4,10 +4,20 @@ import 'package:ecobicimobileapp/services/bicycle_service.dart';
 import 'package:ecobicimobileapp/services/auth_service.dart';
 import 'package:ecobicimobileapp/models/bicycle_model.dart';
 
-class ResultsScreen extends StatelessWidget {
+class ResultsScreen extends StatefulWidget {
+  final double? budget;
+
+  ResultsScreen({this.budget});
+
+  @override
+  _ResultsScreenState createState() => _ResultsScreenState();
+}
+
+class _ResultsScreenState extends State<ResultsScreen> {
   final AuthService _authService = AuthService();
-  // Removemos el late y hacemos nullable el _bicycleService
   BicycleService? _bicycleService;
+  int _currentPage = 0;
+  static const int _itemsPerPage = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +54,7 @@ class ResultsScreen extends StatelessWidget {
                 }
 
                 final bicycles = snapshot.data ?? [];
+                final pageCount = (bicycles.length / _itemsPerPage).ceil();
 
                 return Expanded(
                   child: Column(
@@ -60,9 +71,10 @@ class ResultsScreen extends StatelessWidget {
                       SizedBox(height: 20),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: bicycles.length,
+                          itemCount: _getPageItemsCount(bicycles),
                           itemBuilder: (context, index) {
-                            final bicycle = bicycles[index];
+                            final bicycleIndex = _currentPage * _itemsPerPage + index;
+                            final bicycle = bicycles[bicycleIndex];
                             return _buildResultCard(
                               context,
                               bicycle: bicycle,
@@ -70,23 +82,7 @@ class ResultsScreen extends StatelessWidget {
                           },
                         ),
                       ),
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            // Limpiamos el servicio antes de recargar
-                            _bicycleService = null;
-                            (context as Element).markNeedsBuild();
-                          },
-                          child: Text(
-                            'Recargar',
-                            style: TextStyle(
-                              color: Color(0xFF325D67),
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
+                      _buildPaginatorControls(pageCount),
                     ],
                   ),
                 );
@@ -99,25 +95,65 @@ class ResultsScreen extends StatelessWidget {
   }
 
   Future<List<BicycleModel>> _getBicycles() async {
-    // Si ya existe el servicio, lo usamos directamente
-    if (_bicycleService != null) {
-      return _bicycleService!.getAllBicycles();
+    if (_bicycleService == null) {
+      final token = await AuthService.getCurrentUserToken();
+      final userId = await AuthService.getCurrentUserId();
+      if (token == null || userId == null) throw Exception('No se encontró token o userId');
+
+      _bicycleService = BicycleService(accessToken: token, userId: userId.toString());
     }
 
-    // Si no existe, lo inicializamos
-    final token = await AuthService.getCurrentUserToken();
-    final userId = await AuthService.getCurrentUserId();
+    final allBicycles = await _bicycleService!.getAllBicycles();
 
-    if (token == null || userId == null) {
-      throw Exception('No se encontró token o userId');
+    // Filtrar por presupuesto si se especifica
+    if (widget.budget != null) {
+      return allBicycles.where((bicycle) => bicycle.bicyclePrice <= widget.budget!).toList();
     }
 
-    _bicycleService = BicycleService(
-      accessToken: token,
-      userId: userId.toString(),
+    return allBicycles;
+  }
+
+
+  int _getPageItemsCount(List<BicycleModel> bicycles) {
+    final start = _currentPage * _itemsPerPage;
+    final end = start + _itemsPerPage;
+    return (end > bicycles.length) ? bicycles.length - start : _itemsPerPage;
+  }
+
+  Widget _buildPaginatorControls(int pageCount) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: _currentPage > 0
+              ? () {
+            setState(() {
+              _currentPage--;
+            });
+          }
+              : null,
+        ),
+        Text(
+          'Página ${_currentPage + 1} de $pageCount',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.arrow_forward),
+          onPressed: _currentPage < pageCount - 1
+              ? () {
+            setState(() {
+              _currentPage++;
+            });
+          }
+              : null,
+        ),
+      ],
     );
-
-    return _bicycleService!.getAllBicycles();
   }
 
   Widget _buildResultCard(
@@ -139,7 +175,7 @@ class ResultsScreen extends StatelessWidget {
             brakes: "Sin especificar",
             weight: "Sin especificar",
             price: "S/ ${bicycle.bicyclePrice}/día",
-            bicycle: bicycle, // Añadimos la bicicleta aquí
+            bicycle: bicycle,
           ),
         );
       },

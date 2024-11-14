@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/services/bicycle_service.dart';
 import 'package:ecobicimobileapp/models/bicycle_model.dart';
+import 'package:ecobicimobileapp/models/bicycle_update_dto.dart';
 import 'package:ecobicimobileapp/services/auth_service.dart';
 
 class EditBikeScreen extends StatefulWidget {
@@ -54,26 +55,34 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
           userId: userId.toString(),
         );
 
-        final updatedBicycle = BicycleModel(
-          id: widget.bicycle.id, // Mantener el ID original
+        final updateDto = BicycleUpdateDto(
           bicycleName: _nameController.text.trim(),
           bicycleDescription: _descriptionController.text.trim(),
           bicyclePrice: double.parse(_priceController.text.trim()),
           bicycleSize: _sizeController.text.trim(),
           bicycleModel: _modelController.text.trim(),
           imageData: _imageUrlController.text.trim().isEmpty
-              ? ""
+              ? null
               : _imageUrlController.text.trim(),
         );
 
-        final result = await bicycleService.updateBicycle(
-            widget.bicycle.id, updatedBicycle);
+        final updatedBicycle = await bicycleService.updateBicycle(
+          widget.bicycle.id,
+          updateDto,
+        );
+
+        _nameController.text = updatedBicycle.bicycleName;
+        _descriptionController.text = updatedBicycle.bicycleDescription;
+        _priceController.text = updatedBicycle.bicyclePrice.toString();
+        _sizeController.text = updatedBicycle.bicycleSize;
+        _modelController.text = updatedBicycle.bicycleModel;
+        _imageUrlController.text = updatedBicycle.imageData ?? '';
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('¡Bicicleta actualizada con éxito!')),
         );
 
-        Navigator.pop(context, result);
+        Navigator.pop(context, updatedBicycle);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
