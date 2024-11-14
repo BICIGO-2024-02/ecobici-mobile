@@ -37,16 +37,16 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Image URL Help'),
+        title: Text('Ayuda'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('For the image URL, you can:'),
+            Text('Para la URL de la imagen, puede:'),
             SizedBox(height: 8),
-            Text('• Use any public image URL ending in .jpg, .jpeg, or .png'),
-            Text('• Make sure the URL starts with http:// or https://'),
-            Text('• Use image hosting services like:'),
+            Text('• Utilice cualquier URL de imagen pública que termine en .jpg, .jpeg o .png.'),
+            Text('• Asegúrese de que la URL comience con http:// o https://'),
+            Text('• Utilice servicios de alojamiento de imágenes como:'),
             Text('  - imgur.com'),
             Text('  - cloudinary.com'),
             Text('  - imgbb.com'),
@@ -71,7 +71,7 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
         final userId = await AuthService.getCurrentUserId();
 
         if (token == null || userId == null) {
-          throw Exception('No authentication token found');
+          throw Exception('No se encontró ningún token de autenticación');
         }
 
         print('UserID: $userId'); // Debug log
@@ -97,7 +97,7 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
         final addedBicycle = await bicycleService.addBicycleToUser(newBicycle);
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Bicycle added successfully!')),
+          SnackBar(content: Text('¡Bicicleta agregada exitosamente!')),
         );
 
         Navigator.pop(context, addedBicycle);
@@ -124,7 +124,7 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF325D67)),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Add New Bike',
+        title: Text('Agregar nueva bicicleta',
             style: TextStyle(
                 color: Color(0xFF325D67), fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
@@ -138,7 +138,7 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Bike Details',
+                'Detalles de la bicicleta',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -146,68 +146,68 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
               ),
               SizedBox(height: 24),
               _buildTextField(
-                'Bike Name',
+                'Nombre de la bicicleta',
                 Icons.pedal_bike,
                 _nameController,
                 validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Please enter a bike name';
+                  if (value?.isEmpty ?? true) return 'Por favor ingresa el nombre de una bicicleta';
                   return null;
                 },
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Description',
+                'Descripción',
                 Icons.description,
                 _descriptionController,
                 validator: (value) {
                   if (value?.isEmpty ?? true)
-                    return 'Please enter a description';
+                    return 'Por favor ingresa una descripción';
                   return null;
                 },
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Price per day',
+                'Precio por dia',
                 Icons.attach_money,
                 _priceController,
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Please enter a price';
+                  if (value?.isEmpty ?? true) return 'Por favor introduce un precio';
                   if (double.tryParse(value!) == null)
-                    return 'Please enter a valid number';
+                    return 'Por favor ingresa un número válido';
                   return null;
                 },
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Size',
+                'Tamaño',
                 Icons.straighten,
                 _sizeController,
                 validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Please enter a size';
+                  if (value?.isEmpty ?? true) return 'Por favor introduce una talla';
                   return null;
                 },
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Model',
+                'Modelo',
                 Icons.category,
                 _modelController,
                 validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Please enter a model';
+                  if (value?.isEmpty ?? true) return 'Por favor introduce un modelo';
                   return null;
                 },
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Image URL (Optional)',
+                'URL de la imagen (opcional)',
                 Icons.link,
                 _imageUrlController,
                 validator: (value) {
                   if (value != null &&
                       value.isNotEmpty &&
                       !_isValidImageUrl(value)) {
-                    return 'Please enter a valid URL starting with http:// or https://';
+                    return 'Introduzca una URL válida que comience con http:// o https://';
                   }
                   return null;
                 },
@@ -240,7 +240,7 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Center(
-                          child: Text('Error loading image',
+                          child: Text('Error al cargar la imagen',
                               style: TextStyle(color: Colors.red)),
                         );
                       },
@@ -252,7 +252,7 @@ class _AddBikeScreenState extends State<AddBikeScreen> {
                 onPressed: _isLoading ? null : _submitForm,
                 child: _isLoading
                     ? CircularProgressIndicator(color: Colors.white)
-                    : Text('Add Bike', style: TextStyle(fontSize: 18)),
+                    : Text('Añadir bicicleta', style: TextStyle(fontSize: 18)),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Color(0xFF325D67),

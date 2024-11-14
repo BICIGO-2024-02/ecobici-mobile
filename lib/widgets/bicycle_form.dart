@@ -25,7 +25,7 @@ class _BicycleFormState extends State<BicycleForm> {
               // TODO: Implement image upload
             },
             icon: Icon(Icons.upload),
-            label: Text('Upload Images'),
+            label: Text('Subir imágenes'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF325D67),
               padding: EdgeInsets.symmetric(vertical: 12),
@@ -40,7 +40,7 @@ class _BicycleFormState extends State<BicycleForm> {
                 ? CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   )
-                : Text('Publish Bicycle'),
+                : Text('Publicar bicicleta'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF325D67),
               padding: EdgeInsets.symmetric(vertical: 16),

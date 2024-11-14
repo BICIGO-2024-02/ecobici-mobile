@@ -7,12 +7,12 @@ class BasicFormFields extends StatelessWidget {
       children: [
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Owner Name',
+            labelText: 'Nombre del propietario',
             border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter the owner name';
+              return 'Por favor ingrese el nombre del propietario';
             }
             return null;
           },
@@ -20,12 +20,12 @@ class BasicFormFields extends StatelessWidget {
         SizedBox(height: 16),
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Location',
+            labelText: 'Ubicación',
             border: OutlineInputBorder(),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter the location';
+              return 'Por favor ingrese la ubicación';
             }
             return null;
           },
@@ -33,10 +33,10 @@ class BasicFormFields extends StatelessWidget {
         SizedBox(height: 16),
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
-            labelText: 'Bicycle Type',
+            labelText: 'Tipo de bicicleta',
             border: OutlineInputBorder(),
           ),
-          items: ['Mountain', 'City', 'Hybrid']
+          items: ['Montaña', 'Ciudad', 'Híbrido']
               .map((type) => DropdownMenuItem(
                     value: type,
                     child: Text(type),
@@ -45,7 +45,7 @@ class BasicFormFields extends StatelessWidget {
           onChanged: (value) {},
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please select a bicycle type';
+              return 'Por favor seleccione un tipo de bicicleta';
             }
             return null;
           },
@@ -53,14 +53,14 @@ class BasicFormFields extends StatelessWidget {
         SizedBox(height: 16),
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Price per Hour',
+            labelText: 'Precio por hora',
             border: OutlineInputBorder(),
             prefixText: '\$',
           ),
           keyboardType: TextInputType.number,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter the price per hour';
+              return 'Por favor introduce el precio por hora';
             }
             return null;
           },
@@ -68,13 +68,13 @@ class BasicFormFields extends StatelessWidget {
         SizedBox(height: 16),
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Description',
+            labelText: 'Descripcion',
             border: OutlineInputBorder(),
           ),
           maxLines: 3,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter a description';
+              return 'Por favor ingresa una descripción';
             }
             return null;
           },

@@ -1,3 +1,4 @@
+import 'package:ecobicimobileapp/screens/terminos_y_condiciones.dart';
 import 'package:ecobicimobileapp/screens/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +7,8 @@ import 'package:ecobicimobileapp/screens/help_support_screen.dart';
 import 'package:ecobicimobileapp/services/auth_service.dart';
 import 'package:ecobicimobileapp/services/user_service.dart';
 import 'package:ecobicimobileapp/models/user_model.dart';
+
+import 'notification_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   @override
@@ -16,6 +19,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   User? userData;
   bool isLoading = true;
   String? error;
+  String? accessToken;
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
 
       final user = await UserService.getUserById(userId, token);
+      accessToken = token;
 
       if (user == null) {
         throw Exception('No user data found');
@@ -208,9 +213,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildStatItem(
-                        'Total Bicycles', '${userData?.bicycles.length ?? 0}'),
+                        'Total de bicicletas', '${userData?.bicycles.length ?? 0}'),
                     _buildStatItem(
-                        'Joined', userData?.birthDate.split('T')[0] ?? 'N/A'),
+                        'Desde', userData?.birthDate.split('T')[0] ?? 'N/A'),
                   ],
                 ),
               ),
@@ -238,9 +243,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   }
               ),
               _buildMenuItem(
-                  context, Icons.notifications_outlined, 'Notificationes'),
+                  context, Icons.notifications_outlined, 'Notificationes',
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NotificationScreen(
+                              userId: userData?.id ?? 0,
+                              accessToken: accessToken ?? '',
+                            ))
+                    );
+                  }
+              ),
               _buildMenuItem(
-                  context, Icons.security_outlined, 'Términos y condiciones'),
+                  context, Icons.security_outlined, 'Términos y condiciones',
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TermsAndConditionsScreen()));
+                  }
+              ),
               _buildMenuItem(context, Icons.help_outline, 'Contáctanos',
                   onTap: () {
                     Navigator.push(
@@ -271,7 +294,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       elevation: 0,
                     ),
                     child: Text(
-                      'Log Out',
+                      'Cerrar sesión',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

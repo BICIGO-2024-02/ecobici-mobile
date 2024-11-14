@@ -31,7 +31,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Future<void> createRent() async {
     if (selectedDateRange == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select dates first')),
+        SnackBar(content: Text('Por favor seleccione las fechas primero')),
       );
       return;
     }
@@ -42,7 +42,7 @@ class _BookingScreenState extends State<BookingScreen> {
       final token = await AuthService.getCurrentUserToken();
 
       if (token == null) {
-        throw Exception('Authentication required');
+        throw Exception('Se requiere autenticación');
       }
 
       final rentService = RentService(accessToken: token);
@@ -94,7 +94,7 @@ class _BookingScreenState extends State<BookingScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF325D67)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Booking', style: TextStyle(color: Color(0xFF325D67))),
+        title: Text('Reserva', style: TextStyle(color: Color(0xFF325D67))),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -103,7 +103,7 @@ class _BookingScreenState extends State<BookingScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Drive in style',
+                'Conduce con estilo',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -128,7 +128,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('You have chosen',
+                      Text('Tu has elegido',
                           style: TextStyle(
                               fontSize: 18, color: Color(0xFF325D67))),
                       SizedBox(height: 16),
@@ -168,7 +168,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Select dates',
+              Text('Seleccionar fechas',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -210,7 +210,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        'Length: ${selectedDateRange?.duration.inDays ?? 0} day/s'),
+                        'Duración: ${selectedDateRange?.duration.inDays ?? 0} día/s'),
                     Text('Total: S/ $totalCost',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -231,7 +231,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               );
             },
-            child: Text('Confirm'),
+            child: Text('Confirmar'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF325D67),
               foregroundColor: Colors.white,

@@ -48,7 +48,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       showDialog(
           context: context,
           builder: (c)=> const AlertDialog(
-            content: Text("Cancelled"),
+            content: Text("Cancelado"),
           )
       );
     }
@@ -73,7 +73,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          title: Text('Booking Confirmed', style: TextStyle(color: Color(0xFF325D67))),
+          title: Text('Reserva confirmada', style: TextStyle(color: Color(0xFF325D67))),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -95,13 +95,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Congratulations!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('¡Felicidades!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel', style: TextStyle(color: Colors.grey)),
+              child: Text('Cancelar', style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -184,9 +184,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,7 +194,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF325D67)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Payment', style: TextStyle(color: Color(0xFF325D67))),
+        title: Text('Pago', style: TextStyle(color: Color(0xFF325D67))),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -222,7 +219,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('You have chosen', style: TextStyle(fontSize: 18, color: Color(0xFF325D67))),
+                    Text('Tu has elegido', style: TextStyle(fontSize: 18, color: Color(0xFF325D67))),
                     SizedBox(height: 16),
                     Row(
                       children: [
@@ -250,7 +247,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Payment Methods', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
+              Text('Métodos de pago', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
               SizedBox(height: 16),
               PaymentMethodSelector(
                 selectedPaymentMethod: selectedPaymentMethod,
@@ -274,7 +271,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Length: ${widget.rentalDays} day/s'),
+                    Text('Duración: ${widget.rentalDays} día/s'),
                     Text('Total: \$${widget.totalCost}', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF325D67))),
                   ],
                 ),
@@ -283,10 +280,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ElevatedButton(
                 onPressed:(){
                   paymentSheetInitialization(
-                      widget.totalCost.round().toString(), "USD"
+                      widget.totalCost.round().toString(), "SOL"
                   );
                 },
-                child: Text('Pay Now USD ${widget.totalCost}'),
+                child: Text('Pagar ahora SOL ${widget.totalCost}'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF325D67),
                   foregroundColor: Colors.white,

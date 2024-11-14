@@ -14,7 +14,7 @@ class BicycleSearchScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: 16.0), // Añadido padding lateral
           child: Text(
-            'Drive in style',
+            'Conduce con estilo',
             style: TextStyle(
               color: Color(0xFF325D67),
               fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class BicycleSearchScreen extends StatelessWidget {
                     ),
                     child: TextField(
                       decoration: InputDecoration(
-                        hintText: "Search:",
+                        hintText: "Buscar:",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none, // Sin borde exterior
@@ -121,7 +121,7 @@ class BicycleSearchScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: 40), // Mantén el padding para el texto
               child: Text(
-                "Popular Brands",
+                "Marcas populares",
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -145,7 +145,7 @@ class BicycleSearchScreen extends StatelessWidget {
                       // Acción de "View All"
                     },
                     child: Text(
-                      "View All",
+                      "Ver todo",
                       style: TextStyle(
                         color: Color(0xFF325D67),
                         fontSize: 16,
@@ -162,7 +162,7 @@ class BicycleSearchScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40), // Mantén el padding
               child: Text(
-                "Budget",
+                "Presupuesto",
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,

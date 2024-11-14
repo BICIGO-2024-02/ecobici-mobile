@@ -32,7 +32,7 @@ class BikeDetailBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Bike Information',
+            'Información de bicicleta',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -40,12 +40,12 @@ class BikeDetailBottomSheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _buildInfoRow('Type', type),
-          _buildInfoRow('Frame Size', frameSize),
-          _buildInfoRow('Frame Material', frameMaterial),
-          _buildInfoRow('Gears', gears),
-          _buildInfoRow('Brakes', brakes),
-          _buildInfoRow('Weight', weight),
+          _buildInfoRow('Tipo', type),
+          _buildInfoRow('Tamaño del marco', frameSize),
+          _buildInfoRow('Material del marco', frameMaterial),
+          _buildInfoRow('Engranajes', gears),
+          _buildInfoRow('Frenos', brakes),
+          _buildInfoRow('Peso', weight),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => Navigator.push(
@@ -63,7 +63,7 @@ class BikeDetailBottomSheet extends StatelessWidget {
             child: Padding(
               padding:
               const EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-              child: Text("Book Today for $price",
+              child: Text("Reserva hoy por $price",
                   style: const TextStyle(color: Colors.white)),
             ),
           ),

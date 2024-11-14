@@ -4,25 +4,25 @@ class AdditionalDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      title: Text('Additional Details'),
+      title: Text('Más detalles'),
       children: [
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Frame Size',
+            labelText: 'Tamaño del marco',
             border: OutlineInputBorder(),
           ),
         ),
         SizedBox(height: 8),
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Wheel Size',
+            labelText: 'Tamaño de la rueda',
             border: OutlineInputBorder(),
           ),
         ),
         SizedBox(height: 8),
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Number of Gears',
+            labelText: 'Número de engranajes',
             border: OutlineInputBorder(),
           ),
           keyboardType: TextInputType.number,
@@ -30,7 +30,7 @@ class AdditionalDetails extends StatelessWidget {
         SizedBox(height: 8),
         TextFormField(
           decoration: InputDecoration(
-            labelText: 'Brake Type',
+            labelText: 'Tipo de freno',
             border: OutlineInputBorder(),
           ),
         ),

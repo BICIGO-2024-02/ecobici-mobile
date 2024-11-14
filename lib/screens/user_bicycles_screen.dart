@@ -78,7 +78,7 @@ class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          'My Listed Bikes',
+          'Mis bicicletas',
           style: TextStyle(
             color: Color(0xFF325D67),
             fontSize: 28,
@@ -118,7 +118,7 @@ class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Total Bikes',
+                      'Total de bicicletas',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.8),
                         fontSize: 16,
@@ -218,7 +218,7 @@ class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Price per day',
+                                    'Precio por día',
                                     style: TextStyle(
                                       color: Colors.grey[600],
                                       fontSize: 12,
@@ -238,7 +238,7 @@ class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
                                 children: [
                                   _buildActionButton(
                                     icon: Icons.edit,
-                                    label: 'Edit',
+                                    label: 'Editar',
                                     onPressed: () async {
                                       final result = await Navigator.push(
                                         context,
@@ -256,7 +256,7 @@ class _MyListedBikesScreenState extends State<MyListedBikesScreen> {
                                   SizedBox(width: 8),
                                   _buildActionButton(
                                     icon: Icons.delete,
-                                    label: 'Delete',
+                                    label: 'Eliminar',
                                     onPressed: () {
                                       // Implementar eliminación
                                     },

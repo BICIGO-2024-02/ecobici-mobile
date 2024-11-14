@@ -42,7 +42,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             Container(
               margin: EdgeInsets.only(top: 30, left: 40, right: 40), // Margin para crear espacio en los laterales
               child: Text(
-                'Price Range',
+                'Rango de precios',
                 style: TextStyle(
                   color: Color(0xFF325D67),
                   fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 40), // Aplicamos margin en lugar de padding
               child: Text(
-                "Brands",
+                "Marcas",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF325D67),
@@ -126,7 +126,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 40), // Aplicamos margin en lugar de padding
               child: Text(
-                "Type",
+                "Tipo",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -140,9 +140,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildFilterOption("Mountain", true),
-                  _buildFilterOption("Road", false),
-                  _buildFilterOption("Electric", false),
+                  _buildFilterOption("Montaña", true),
+                  _buildFilterOption("Camino", false),
+                  _buildFilterOption("Eléctrica", false),
                 ],
               ),
             ),
@@ -152,7 +152,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 40), // Aplicamos margin en lugar de padding
               child: Text(
-                "Gearbox",
+                "Caja de cambios",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -166,9 +166,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildFilterOption("Aluminium", true),
+                  _buildFilterOption("Aluminio", true),
                   _buildFilterOption("Carbon", false),
-                  _buildFilterOption("Steel", false),
+                  _buildFilterOption("Acero", false),
                 ],
               ),
             ),
@@ -197,7 +197,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-                    child: Text("Apply", style: TextStyle(color: Colors.white)),
+                    child: Text("Aplicar", style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ),

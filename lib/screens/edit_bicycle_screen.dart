@@ -70,7 +70,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
             widget.bicycle.id, updatedBicycle);
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Bicycle updated successfully!')),
+          SnackBar(content: Text('¡Bicicleta actualizada con éxito!')),
         );
 
         Navigator.pop(context, result);
@@ -96,7 +96,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF325D67)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Edit Bike',
+        title: Text('Editar bicicleta',
             style: TextStyle(
                 color: Color(0xFF325D67), fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
@@ -110,7 +110,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Edit Bike Details',
+                'Editar detalles de la bicicleta',
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -118,53 +118,53 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
               ),
               SizedBox(height: 24),
               _buildTextField(
-                'Bike Name',
+                'Nombre de la bicicleta',
                 Icons.pedal_bike,
                 _nameController,
                 validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter a bike name' : null,
+                value?.isEmpty ?? true ? 'Por favor ingresa el nombre de una bicicleta' : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Description',
+                'Descripcion',
                 Icons.description,
                 _descriptionController,
                 validator: (value) => value?.isEmpty ?? true
-                    ? 'Please enter a description'
+                    ? 'Por favor ingresa una descripción'
                     : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Price per day',
+                'Precio por dia',
                 Icons.attach_money,
                 _priceController,
                 keyboardType: TextInputType.number,
                 validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Please enter a price';
+                  if (value?.isEmpty ?? true) return 'Por favor introduce un precio';
                   if (double.tryParse(value!) == null)
-                    return 'Please enter a valid number';
+                    return 'Por favor ingresa un número válido';
                   return null;
                 },
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Size',
+                'Tamaño',
                 Icons.straighten,
                 _sizeController,
                 validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter a size' : null,
+                value?.isEmpty ?? true ? 'Por favor introduce una talla' : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Model',
+                'Modelo',
                 Icons.category,
                 _modelController,
                 validator: (value) =>
-                value?.isEmpty ?? true ? 'Please enter a model' : null,
+                value?.isEmpty ?? true ? 'Por favor introduce un modelo' : null,
               ),
               SizedBox(height: 16),
               _buildTextField(
-                'Image URL (Optional)',
+                'URL de la imagen (opcional)',
                 Icons.link,
                 _imageUrlController,
               ),
@@ -190,7 +190,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
                       _imageUrlController.text,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Center(
-                        child: Text('Error loading image',
+                        child: Text('Error al cargar la imagen',
                             style: TextStyle(color: Colors.red)),
                       ),
                     ),
@@ -201,7 +201,7 @@ class _EditBikeScreenState extends State<EditBikeScreen> {
                 onPressed: _isLoading ? null : _submitForm,
                 child: _isLoading
                     ? CircularProgressIndicator(color: Colors.white)
-                    : Text('Save Changes', style: TextStyle(fontSize: 18)),
+                    : Text('Guardar cambios', style: TextStyle(fontSize: 18)),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Color(0xFF325D67),

@@ -12,7 +12,7 @@ class AddBicycleButton extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: onPressed,
         icon: Icon(Icons.add),
-        label: Text('Add Bicycle'),
+        label: Text('Añadir bicicleta'),
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF325D67),
           foregroundColor: Colors.white,

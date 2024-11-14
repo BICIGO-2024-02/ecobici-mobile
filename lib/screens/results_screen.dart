@@ -17,7 +17,7 @@ class ResultsScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text(
-          'Results',
+          'Resultados',
           style: TextStyle(
             color: Color(0xFF325D67),
             fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class ResultsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${bicycles.length} Results',
+                        '${bicycles.length} Resultados',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class ResultsScreen extends StatelessWidget {
                             (context as Element).markNeedsBuild();
                           },
                           child: Text(
-                            'Reload',
+                            'Recargar',
                             style: TextStyle(
                               color: Color(0xFF325D67),
                               fontSize: 16,
@@ -134,11 +134,11 @@ class ResultsScreen extends StatelessWidget {
           builder: (context) => BikeDetailBottomSheet(
             type: bicycle.bicycleModel,
             frameSize: bicycle.bicycleSize,
-            frameMaterial: "Not specified",
-            gears: "Not specified",
-            brakes: "Not specified",
-            weight: "Not specified",
-            price: "S/ ${bicycle.bicyclePrice}/day",
+            frameMaterial: "Sin especificar",
+            gears: "Sin especificar",
+            brakes: "Sin especificar",
+            weight: "Sin especificar",
+            price: "S/ ${bicycle.bicyclePrice}/día",
             bicycle: bicycle, // Añadimos la bicicleta aquí
           ),
         );
@@ -188,7 +188,7 @@ class ResultsScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                "S/ ${bicycle.bicyclePrice}/day",
+                "S/ ${bicycle.bicyclePrice}/día",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
