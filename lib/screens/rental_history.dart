@@ -91,7 +91,7 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text(
-          'My Rentals',
+          'Mis rentas',
           style: TextStyle(
             color: Color(0xFF325D67),
             fontSize: 28,
@@ -123,9 +123,9 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatItem('Total Rides', _rentals.length.toString(), Colors.white),
+                _buildStatItem('Rentas totales', _rentals.length.toString(), Colors.white),
                 _buildStatItem(
-                    'This Month',
+                    'Este mes',
                     _rentals.where((rental) {
                       final startDate = DateTime.parse(rental.rentStartDate);
                       return startDate.month == DateTime.now().month &&
@@ -134,7 +134,7 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
                     Colors.white
                 ),
                 _buildStatItem(
-                    'Active',
+                    'Activo',
                     _rentals.where((rental) {
                       final endDate = DateTime.parse(rental.rentEndDate);
                       return endDate.isAfter(DateTime.now());
@@ -151,7 +151,7 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
             child: Row(
               children: [
                 Text(
-                  'Recent Rentals',
+                  'Rentas recientes',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -173,7 +173,7 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
                       ),
                       SizedBox(width: 4),
                       Text(
-                        'Filter',
+                        'Filtro',
                         style: TextStyle(
                           color: Color(0xFF325D67),
                           fontWeight: FontWeight.w500,

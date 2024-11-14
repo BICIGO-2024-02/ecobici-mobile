@@ -1,3 +1,4 @@
+import 'package:ecobicimobileapp/screens/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ecobicimobileapp/screens/signin_screen.dart';
@@ -228,7 +229,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
 
               _buildMenuItem(
-                  context, Icons.person_outline, 'información personal'),
+                  context, Icons.person_outline, 'información personal',
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateProfileScreen()));
+                  }
+              ),
               _buildMenuItem(
                   context, Icons.notifications_outlined, 'Notificationes'),
               _buildMenuItem(

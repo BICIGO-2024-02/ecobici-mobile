@@ -1,7 +1,8 @@
-import 'package:ecobicimobileapp/models/bicycle_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../constants/constants.dart';
+import '../models/bicycle_model.dart';
 import '../models/user_model.dart';
 
 class UserService {
@@ -9,7 +10,7 @@ class UserService {
 
   Future<List<User>> getAllUsers(String accessToken) async {
     final response = await http.get(
-      Uri.parse("$baseUrl/users"),
+      Uri.parse("$baseUrl/api/ecobici/v1/users"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
@@ -92,18 +93,22 @@ class UserService {
     }
   }
 
-  Future<User> updateUser(int userId, User user, String accessToken) async {
+  static Future<void> updateUser(int userId, String accessToken, String name, String lastname, String email) async {
     final response = await http.put(
-      Uri.parse("$baseUrl/users/$userId"),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: jsonEncode(user.toJson()),
+        Uri.parse("$baseUrl/api/ecobici/v1/users/$userId"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode({
+          'userFirstName': name,
+          'userLastName': lastname,
+          'userEmail': email,
+        })
     );
 
     if (response.statusCode == 200) {
-      return User.fromJson(jsonDecode(response.body));
+      return;
     } else {
       throw Exception("Failed to update user");
     }
