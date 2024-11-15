@@ -1,3 +1,4 @@
+import 'package:ecobicimobileapp/models/update_user_model.dart';
 import 'package:ecobicimobileapp/screens/add_bicycle_screen.dart';
 import 'package:ecobicimobileapp/screens/profile.dart';
 import 'package:ecobicimobileapp/screens/rental_history.dart';
@@ -6,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:ecobicimobileapp/widgets/bottomNavigationBar.dart';
 import 'package:ecobicimobileapp/screens/screens.dart';
 
+import '../services/auth_service.dart';
+import '../services/user_service.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -13,8 +17,50 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  // Estado para controlar el índice de la pantalla activa
+  late String token;
+  late int userId;
   int _selectedIndex = 0;
+  String? userImageUrl;
+  bool _isLoading = true;
+  String? _error;
+  late final UserService _userService;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+
+      // Fetch token and userId
+      final fetchedToken = await AuthService.getCurrentUserToken();
+      final fetchedUserId = await AuthService.getCurrentUserId();
+
+      setState(() {
+        token = fetchedToken ?? ''; // Handle null token if needed
+        userId = fetchedUserId ?? 0;
+        _userService = UserService();
+      });
+
+      // Load user data and get user image
+      final userData = await UserService.getUserById(userId, token); // Supón que este método devuelve un objeto de usuario con `imageData`
+      setState(() {
+        userImageUrl = userData?.imageData; // Asigna la URL de la foto del usuario
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load user data';
+        _isLoading = false;
+      });
+    }
+  }
+
 
   // Lista de pantallas que se mostrarán según el índice
   static List<Widget> _widgetOptions = <Widget>[
@@ -35,32 +81,34 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Barra superior con la foto del usuario y el botón hamburguesa a la derecha
         backgroundColor: Colors.white,
         elevation: 0,
-        automaticallyImplyLeading:
-        false, // Esto oculta el ícono de 'back' si no es necesario
+        automaticallyImplyLeading: false,
         actions: [
           PopupMenuButton<int>(
             icon: Icon(Icons.menu, color: Color(0xFF325D67), size: 30),
-            color: Colors.white, // Fondo blanco para el menú
+            color: Colors.white,
             onSelected: (item) => selectedItem(context, item),
             itemBuilder: (context) => [
               _buildMenuItem(0, 'Configuración'),
-              _buildMenuItem(2, 'Mis bicicletas')
+              _buildMenuItem(2, 'Mis bicicletas'),
             ],
           ),
-          // Icono de la foto del usuario
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: CircleAvatar(
               radius: 20,
-              backgroundImage: NetworkImage(
-                'https://via.placeholder.com/150', // Aquí puedes poner la URL de la foto del usuario
-              ),
+              backgroundImage: userImageUrl != null && userImageUrl!.isNotEmpty
+                  ? NetworkImage(userImageUrl!) // URL de la imagen
+                  : null, // Si no hay URL, usa un ícono predeterminado
+              child: userImageUrl == null || userImageUrl!.isEmpty
+                  ? Icon(
+                Icons.person_outline,
+                color: Color(0xFF325D67),
+              )
+                  : null,
             ),
           ),
-          // Botón tipo hamburguesa
         ],
       ),
       body: SafeArea(

@@ -73,6 +73,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return primaryColor;
   }
 
+  int calculateDaysUntilStart(String rentStartDate) {
+    final startDate = DateTime.parse(rentStartDate);
+    final currentDate = DateTime.now();
+    final difference = startDate.difference(currentDate).inDays;
+    return difference;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +135,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final rental = snapshot.data![index];
+                final daysUntilStart = calculateDaysUntilStart(rental.rentStartDate);
                 final daysLeft = calculateDaysLeft(rental.rentEndDate);
+
+                String statusMessage;
+                if (daysUntilStart > 0) {
+                  statusMessage = 'Faltan $daysUntilStart días para que empiece tu renta';
+                } else if (daysUntilStart == 0) {
+                  statusMessage = 'Hoy empieza tu renta';
+                } else if (daysLeft > 0) {
+                  statusMessage = 'Quedan $daysLeft días para finalizar la renta';
+                } else {
+                  statusMessage = 'La renta ha finalizado';
+                }
 
                 return Card(
                   elevation: 4,
@@ -167,9 +186,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         children: [
                           SizedBox(height: 8),
                           Text(
-                            daysLeft > 0
-                                ? 'Quedan $daysLeft días para finalizar la renta'
-                                : 'La renta ha finalizado',
+                            statusMessage,
                             style: TextStyle(
                               color: getStatusColor(daysLeft),
                               fontWeight: FontWeight.w500,

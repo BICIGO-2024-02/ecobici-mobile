@@ -220,6 +220,7 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
                             children: [
                               Row(
                                 children: [
+                                  // Aquí reemplazamos el Icon por la imagen de la bicicleta
                                   Container(
                                     width: 50,
                                     height: 50,
@@ -230,6 +231,10 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
                                     child: rental.bicycle.imageData.isNotEmpty
                                         ? ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        rental.bicycle.imageData, // Cambiado a imagen de URL
+                                        fit: BoxFit.cover,
+                                      ),
                                     )
                                         : Icon(
                                       Icons.pedal_bike,
@@ -252,7 +257,7 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
                                         SizedBox(height: 4),
                                         Text(
                                           DateFormat('dd MMM yyyy').format(
-                                              DateTime.parse(rental.rentStartDate)
+                                            DateTime.parse(rental.rentStartDate),
                                           ),
                                           style: TextStyle(
                                             color: Colors.grey[600],
@@ -279,8 +284,8 @@ class _RentalHistoryScreenState extends State<RentalHistoryScreen> {
                                   _buildInfoChip(
                                     Icons.timer_outlined,
                                     _calculateDuration(
-                                        rental.rentStartDate,
-                                        rental.rentEndDate
+                                      rental.rentStartDate,
+                                      rental.rentEndDate,
                                     ),
                                   ),
                                   _buildStatusChip(_getRentalStatus(rental)),

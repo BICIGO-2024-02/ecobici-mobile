@@ -119,45 +119,42 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                       child: ClipOval(
-                        child: userData?.imageData != null &&
-                            userData!.imageData!.isNotEmpty
+                        child: userData?.imageData != null && userData!.imageData!.isNotEmpty
                             ? Image.network(
-                          userData!.imageData!,
+                          userData!.imageData!, // URL de la imagen
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            print(
-                                'Error loading image: $error'); // Para debugging
+                            // En caso de que ocurra un error al cargar la imagen, se muestra un ícono predeterminado.
+                            print('Error loading image: $error'); // Para debugging
                             return Icon(
                               Icons.person_outline,
                               size: 40,
                               color: Color(0xFF325D67),
                             );
                           },
-                          loadingBuilder:
-                              (context, child, loadingProgress) {
+                          loadingBuilder: (context, child, loadingProgress) {
+                            // Mientras se carga la imagen, muestra un indicador de progreso circular.
                             if (loadingProgress == null) return child;
                             return Center(
                               child: CircularProgressIndicator(
-                                value:
-                                loadingProgress.expectedTotalBytes !=
-                                    null
-                                    ? loadingProgress
-                                    .cumulativeBytesLoaded /
-                                    loadingProgress
-                                        .expectedTotalBytes!
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
                                     : null,
                               ),
                             );
                           },
                         )
                             : Icon(
+                          // Si no hay imagen (URL es nula o vacía), muestra un ícono de perfil.
                           Icons.person_outline,
                           size: 40,
                           color: Color(0xFF325D67),
                         ),
                       ),
+
                     ),
                     SizedBox(width: 16),
                     Expanded(

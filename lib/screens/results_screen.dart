@@ -196,7 +196,17 @@ class _ResultsScreenState extends State<ResultsScreen> {
                   color: Colors.grey[200],
                   height: 80,
                   width: 80,
-                  child: Icon(Icons.directions_bike, size: 50),
+                  child: bicycle.imageData.isNotEmpty
+                      ? Image.network(
+                    bicycle.imageData,
+                    height: 80,
+                    width: 80,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(Icons.error_outline, size: 50, color: Colors.red);
+                    },
+                  )
+                      : Icon(Icons.directions_bike, size: 50),
                 ),
               ),
               SizedBox(width: 20),
@@ -237,4 +247,5 @@ class _ResultsScreenState extends State<ResultsScreen> {
       ),
     );
   }
+
 }

@@ -80,7 +80,15 @@ class BikeDetailBottomSheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(value, style: const TextStyle(color: Colors.black54)),
+          // Aquí ajustamos la descripción para que se ajuste con saltos de línea
+          Flexible(
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.black54),
+              softWrap: true,  // Permite saltos de línea automáticos
+              overflow: TextOverflow.visible,  // Permite que el texto se ajuste sin recortarse
+            ),
+          ),
         ],
       ),
     );

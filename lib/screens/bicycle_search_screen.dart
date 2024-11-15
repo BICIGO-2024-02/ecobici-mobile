@@ -99,9 +99,9 @@ class _BicycleSearchScreenState extends State<BicycleSearchScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBrandIcon("https://cdn.worldvectorlogo.com/logos/monark.svg"),
-                  _buildBrandIcon("https://cdn.worldvectorlogo.com/logos/monark.svg"),
-                  _buildBrandIcon("https://cdn.worldvectorlogo.com/logos/monark.svg"),
+                  _buildBrandIcon("https://yt3.googleusercontent.com/ytc/AIdro_mm7cCW37awUuTAv-9GpCWExNO2tWow6b8zitO5w4ss5g=s900-c-k-c0x00ffffff-no-rj"),
+                  _buildBrandIcon("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzGk0yUi_9YmfpYBU4xgzowblyDp7_DmpeIw&s"),
+                  _buildBrandIcon("https://i.pinimg.com/736x/4c/4d/02/4c4d027ae1bf4b73104a5af660684977.jpg"),
                   GestureDetector(
                     onTap: () {
                       // Acción de "View All"
@@ -192,7 +192,7 @@ class _BicycleSearchScreenState extends State<BicycleSearchScreen> {
   }
 
   // Función para construir los íconos de las marcas
-  Widget _buildBrandIcon(String assetPath) {
+  Widget _buildBrandIcon(String imageUrl) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -207,10 +207,19 @@ class _BicycleSearchScreenState extends State<BicycleSearchScreen> {
       ),
       child: CircleAvatar(
         radius: 30,
-        backgroundImage: AssetImage(assetPath),
+        backgroundImage: imageUrl.isNotEmpty
+            ? NetworkImage(imageUrl)
+            : null, // Usa NetworkImage si la URL no está vacía
+        child: imageUrl.isEmpty
+            ? Icon(
+          Icons.image_not_supported,
+          color: Color(0xFF325D67), // Ícono cuando no hay imagen
+        )
+            : null,
       ),
     );
   }
+
 
   Widget _buildBudgetButton(String label, double budget) {
     return ElevatedButton(
